@@ -1,0 +1,225 @@
+{% extends 'toolbox/_base.html' %} {% load static %} {% block csslink %} {% endblock %} {% block title %} Content category
+{% endblock %} {% block pagetitle %} Contents category {% endblock %}{% block main %} {% load mptt_tags %}
+<style>
+    input.t {
+        border: 1px solid #fff;
+        background: #fff;
+        font-size: 14px;
+        padding-left: 5px;
+        height: 30px;
+        line-height: 30px;
+        width: 300px
+    }
+
+    input.s {
+        border: 1px solid #369;
+        background: #fff;
+        padding-left: 5px;
+        height: 30px;
+        line-height: 30px;
+        width: 300px
+    }
+
+    li {
+        display: list-item;
+    }
+
+    .categoryPanel {
+        border-color: red;
+        background-color: red;
+        margin-left: 20%;
+        width: 800px;
+        height: 800px;
+    }
+</style>
+<div class="row-content am-cf">
+    <div class="row am-cf">
+        <!-- program box -->
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+            <h3>Double click on category name to do relative operations on it.</h3>
+            <button type="button" onclick="addRootCategory()" id="addRoot" class="am-btn am-btn-danger am-btn-sm" style="margin-bottom:10px;">Add new root category</button>
+            <form id="contentForm" class="am-form">
+                <div class="widget am-cf">
+                    <ul>
+
+                        {% recursetree nodes %}
+
+                        <li>
+                            <input class="t categoryInput" id="node{{node.id}}" readonly value="{{ node.name }}">
+                            <button type="button" id="modify{{node.id}}" class="am-btn am-btn-primary am-btn-sm categoryButton" style="display:none;">Modify name </button>
+                            <button type="button" id="view{{node.id}}" class="am-btn am-btn-secondary am-btn-sm categoryButton" style="display:none;" onclick="viewImage({{node.id}})">View image </button>
+                            <button type="button" id="change{{node.id}}" class="am-btn am-btn-success am-btn-sm categoryButton" style="display:none;" onclick="changeImage({{node.id}})">Change image </button>
+                            <button type="button" id="add{{node.id}}" class="am-btn am-btn-warning am-btn-sm categoryButton" style="display:none;" onclick="addChildCategory({{node.id}})">Add child category </button>
+                            <button type="button" id="del{{node.id}}" class="am-btn am-btn-danger am-btn-sm categoryButton" style="display:none;" onclick="delCategory({{node.id}})">Delete </button>
+                            <input type="file" id="file{{node.id}}" onchange="uploadImage({{node.id}})"   
+                            style="display:none;"/>   
+
+                            <script type="text/javascript"> 
+                                var test{{ node.id }} = document.getElementById("node{{node.id}}");
+                                var modify{{ node.id }} = document.getElementById("modify{{node.id}}");
+                                var view{{ node.id }} = document.getElementById("view{{node.id}}");
+                                var change{{ node.id }} = document.getElementById("change{{node.id}}");
+                                var add{{ node.id }} = document.getElementById("add{{node.id}}");
+                                var del{{ node.id }} = document.getElementById("del{{node.id}}");
+
+                                test{{ node.id }}.ondblclick = function () {
+                                    $(".categoryButton").css("display", "none");
+                                    $(".categoryInput").css("border", "1px solid #fff");
+                                    $(".categoryInput").attr("readOnly", "readOnly");
+                                    this.readOnly = false;
+                                    // this.className = "s";
+                                    $(this).css("border", "1px solid #369");
+                                    modify{{ node.id }}.style.display = "";
+                                    view{{ node.id }}.style.display = "";
+                                    change{{ node.id }}.style.display = "";
+                                    add{{ node.id }}.style.display = "";
+                                    del{{ node.id }}.style.display = "";
+
+                                }
+                                modify{{ node.id }}.onclick = function () {
+                                    modifyCategory({{ node.id }}, test{{ node.id }}.value);
+                                test{{ node.id }}.readOnly = true;
+                                // test{{node.id}}.className = "t";
+                                $("#test{{node.id}}").css("border", "1px solid #fff");
+                                this.style.display = "none";
+                                view{{ node.id }}.style.display = "none";
+                                change{{ node.id }}.style.display = "none";
+                                add{{ node.id }}.style.display = "none";
+                                del{{ node.id }}.style.display = "none";                                    
+                                } 
+
+                            </script> {% if not node.is_leaf_node %}
+                            <ul class="children">
+                                {{ children }}
+                            </ul>
+                            {% endif %}
+                        </li>
+
+                        {% endrecursetree %}
+
+                    </ul>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- 
+    double click category to pop up its relative operations
+    1. modify name
+    2. view its image
+    3. change its image
+    4. add child category
+    5. delete
+ -->
+<script>
+    // modify category name
+    function modifyCategory(categoryId, categoryName) {
+        form = new FormData();
+        form.append("operation", "modify");
+        form.append("categoryId", categoryId);
+        form.append("categoryName", categoryName);
+        $.ajax({
+            type: 'POST',
+            url: location.href,
+            data: form,
+            processData: false,  // 告诉jquery不转换数据
+            contentType: false,  // 告诉jquery不设置内容格式
+
+            success: function (data) {
+                alert("update category name successfully.");
+                location.reload();
+            }
+        })
+    }
+    // add root category
+    function addRootCategory() {
+        var categoryName = prompt("Please type the root category name:");
+        if (categoryName != "" && categoryName != null) {
+            form = new FormData();
+            form.append("operation", "addRoot");
+            form.append("categoryName", categoryName);
+            $.ajax({
+                type: 'POST',
+                url: location.href,
+                data: form,
+                processData: false,  // 告诉jquery不转换数据
+                contentType: false,  // 告诉jquery不设置内容格式
+
+                success: function (data) {
+                    alert("Add new root category name successfully.");
+                    location.reload();
+                }
+            })
+        }
+
+    }
+    // add child category
+    function addChildCategory(categoryId) { 
+        var childCategoryName = prompt("Please type the child category name:");
+        if (childCategoryName != "" && childCategoryName != null) {
+            form = new FormData();
+            form.append("operation", "addChild");
+            form.append("parentCategoryId", categoryId);
+            form.append("childCategoryName", childCategoryName);
+            $.ajax({
+                type: 'POST',
+                url: location.href,
+                data: form,
+                processData: false,  // 告诉jquery不转换数据
+                contentType: false,  // 告诉jquery不设置内容格式
+
+                success: function (data) {
+                    alert("Add new child category name successfully.");
+                    location.reload();
+                }
+            })      
+        }
+    }
+    //delete category
+    function delCategory(categoryId) {
+        form = new FormData();
+        form.append("operation", "delete");
+        form.append("categoryId", categoryId);
+        $.ajax({
+            type: 'POST',
+            url: location.href,
+            data: form,
+            processData: false,  // 告诉jquery不转换数据
+            contentType: false,  // 告诉jquery不设置内容格式
+
+            success: function (data) {
+                alert("Delete the category name successfully.");
+                location.reload();
+            }
+        })       
+    }
+
+    function viewImage(categoryId) {
+        window.open("./?operation=viewImage&categoryId=" + categoryId);
+    }
+
+    function changeImage(categoryId) {
+        $(`#file${categoryId}`).trigger("click");       
+    }
+
+    function uploadImage(categoryId) {
+        var fileobj = $(`#file${categoryId}`)[0].files[0];
+        form = new FormData();
+        form.append("operation", "changeImage");
+        form.append("categoryId", categoryId);
+        form.append("file",fileobj)
+        $.ajax({
+            type: 'POST',
+            url: location.href,
+            data: form,
+            processData: false,  // 告诉jquery不转换数据
+            contentType: false,  // 告诉jquery不设置内容格式
+
+            success: function (data) {
+                alert("Change the category image successfully.");
+                location.reload();
+            }
+        })         
+    }
+</script> {% endblock %}

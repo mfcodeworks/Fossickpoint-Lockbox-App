@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>FossickPoint Toolbox</title>
+    <meta name="description" content="This is an index page">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="{% static 'toolbox/css/amazeui.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'toolbox/css/amazeui.datatables.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'toolbox/css/app.css' %}">
+    <link rel="icon" href="http://fossickpoint.com.au/wp-content/uploads/2017/04/cropped-FP-DOT_20170426-32x32.png" sizes="32x32" />
+    <link rel="icon" href="http://fossickpoint.com.au/wp-content/uploads/2017/04/cropped-FP-DOT_20170426-192x192.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="http://fossickpoint.com.au/wp-content/uploads/2017/04/cropped-FP-DOT_20170426-180x180.png" />
+    <script src="{% static 'toolbox/js/jquery.min.js' %}"></script>
+
+</head>
+
+<body data-type="login">
+    <script src="{% static 'toolbox/js/theme.js' %}"></script>
+    <div class="am-g tpl-g">
+
+
+        <div class="tpl-login">
+            <div class="tpl-login-content">
+                <div class="tpl-login-logo">
+
+                </div>
+
+                <legend>Log in</legend>
+
+
+                <!--<form class="am-form tpl-form-line-form">-->
+                <div class="am-form tpl-form-line-form">
+                    <div class="am-form-group">
+                        <input type="text" class="tpl-form-input" placeholder="Please input username" id="userName">
+
+                    </div>
+
+                    <div class="am-form-group">
+                        <input type="password" class="tpl-form-input" placeholder="please input password" id="password">
+                    </div>
+
+
+
+
+                    <div id="tips" style="padding-left:25%; font:12px"></div>
+
+                    <div class="am-form-group">
+
+                        <button id="login" class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn">Log in</button>
+
+                    </div>
+                    <!-- <a href="./register" style="padding-left:20%">Don't have an account? Register now</a> -->
+                </div>
+                <!--</form>-->
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#login").click(function () {
+                    $.post("login/", { "userName": $("#userName").val(), "password": $("#password").val(), csrfmiddlewaretoken: '{{ csrf_token }}' }, function (result) {
+                        if (result["status"] == 0) {
+                            location.href = "./home";
+                        }
+                        else {                          
+                            $("#tips").html("username or password wrong");
+                            $("#tips").css("color", "red");
+                            $("#userName").val("");
+                            $("#password").val("");
+                        }
+
+                    });
+                });
+
+            });
+        </script>
+    </div>
+    <script src="{% static 'toolbox/js/amazeui.min.js' %}"></script>
+    <script src="{% static 'toolbox/js/app.js' %}"></script>
+
+</body>
+
+</html>

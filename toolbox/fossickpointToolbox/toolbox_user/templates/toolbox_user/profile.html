@@ -1,0 +1,125 @@
+{% load static %} {% include 'toolbox_user/__header.html' %}
+<style>
+    .userInfo {
+        margin-top: 20px;
+    }
+    button {
+    background-color: #CD2626; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    }
+</style>
+<!-- PAGE BANNER SECTION -->
+<div class="page-banner-section section">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-banner-content" style="">
+                    <h1>My profile</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END PAGE BANNER SECTION -->
+<div class="page-section section">
+    <div class="container">
+        <div class="row" style="text-align:center">
+            <div style="margin:0 auto">
+                <div class="widget">
+                    <div class="widget-body">
+                        <form id="userForm">
+                            <table border="0" cellpadding="3" cellspacing="0" style="width: 80%; margin:auto">
+                                <tr style="height: 40px">
+                                    <td align="right" width="33%">
+                                        Name:   <input class="profile_input" type="text" value="{{user.name}}" name="user_name">
+                                    </td>
+                                    <td align="right" width="33%">
+                                        Age:  <input class="profile_input" type="number" value="{{user.age}}" name="user_age">
+                                    </td>
+                                    <td align="right">
+                                        Gender: 
+                                        <select class="profile_input"  name="user_gender" id="user_gender">
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
+                                        {% if user.gender == 0 %}
+                                        <script>
+                                            $("#userForm select").val("Male");
+                                        </script>
+                                        {% else %}
+                                        <script>
+                                            $("#userForm select").val("Female");
+                                        </script>
+                                        {% endif %}
+
+                                    </td>
+                                </tr>
+                                <tr style="height: 40px">
+                                    <td align="right" width="33%">
+                                        Nation: <input class="profile_input" type="text" value="{{user.nation}}" name="user_nation">
+                                    </td>
+                                    <td align="right" width="33%">
+                                        City: <input class="profile_input" type="text" value="{{user.city}}" name="user_city">
+                                    </td>
+                                    <td align="right">
+                                        Occupation: <input class="profile_input" type="text" value="{{user.occupation}}" name="user_occupation">
+                                    </td>
+                                </tr>
+                                <tr style="height: 40px">
+                                    <td colspan="2" align="right">
+                                        Address: <input class="profile_input" style="width:87.5%"type="text" value="{{user.address}}" name="user_address">
+                                    </td>
+                                    <td align="right" width="50%">
+                                        Email: <input class="profile_input" type="email" value="{{user.email}}" name="user_email" disabled>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="row userInfo">
+                                <div class="col-sm-4 col-md-2 col-md-offset-4">
+                                    <button type="button" name="setting" id="update" class="btn btn-danger" onclick="updateUserProfile()">Update profile</button>
+                                </div>
+                                <div class="col-sm-4 col-md-2">
+                                    <a type="button" name="program" id="back" href="{% url 'home' %}" class="btn btn-default">Back home</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateUserProfile() {
+        form = new FormData($("#userForm")[0])
+        $.ajax({
+            type:'POST',
+            url: location.href,
+            data:form,
+            processData:false,  // 告诉jquery不转换数据
+            contentType:false,  // 告诉jquery不设置内容格式
+
+            success:function (arg) {
+                if (arg["status"] == "1")
+                {
+                    alert("User profile updated successfully");
+                    location.reload();
+
+                }
+                else
+                {
+                    alert("failed");
+
+                }
+            }
+        });
+    }
+</script>

@@ -1,0 +1,241 @@
+    {% extends 'toolbox/_base.html' %} {% load static %} {% block csslink %}
+<!--<link rel="stylesheet" href="{% static 'toolbox/css/content.css' %}" />-->
+<!--<script src="{% static 'toolbox/js/content.js' %}"></script>-->
+<!--<script src="{% static 'toolbox/js/layer.js' %}"></script>-->
+<script src="{% static 'toolbox/js/user.js' %}"></script>
+<script src="{% static 'toolbox/js/csrf.js' %}"></script>
+
+{% endblock %} {% block title %} Users {% endblock %}
+{% block pagetitle %} Users {% endblock %}
+{% block main %}
+<style>
+    .userInfo {
+        margin-top: 20px;
+    }
+</style>
+
+<div class="row-content am-cf">
+        <div class="row am-cf">
+            <div class="am-u-sm-12 am-u-md-8">
+                <div class="widget am-cf">
+                    <div class="widget-head am-cf">
+                        <div id="userTypeDiv" name="userTypeDiv">
+                            User Toolbox plan: &nbsp&nbsp
+                            <select id="userTypeSelect">
+                                <option value="1">Free plan</option>
+                                <option value="2">Unlimited plan</option>
+                                <option value="3">Indivisualized plan</option>
+                                <option value="4">Premium plan</option>                                
+                            </select>
+                            
+                            <script>
+                                var type = {{userType.toolbox_user_type}};
+                                if(type==1){
+                                    $("#userTypeSelect option[value='1']").attr("selected", true);
+                                }else if(type==0){
+                                    $("#userTypeSelect option[value='0']").attr("selected", true);
+                                }else if(type==2){
+                                    $("#userTypeSelect option[value='2']").attr("selected", true);
+                                }else if(type==3){
+                                    $("#userTypeSelect option[value='3']").attr("selected", true);
+                                }
+                            </script>
+                            <span style="float:right">User toolbox plan verify code:
+                            <input type="text" value="{{user.toolbox_certificate_code}}"></span>
+                        </div>
+                    </div>
+                    <div class="widget-body am-fr">
+                        <form id="userForm" class="am-form">
+                            <table border="1" width="100%">
+                                <th style="text-align:center;" colspan="3">Personal Details</th>
+                                <tr>
+                                    <td align="center" width="33%">
+                                        Name: {{user.name}}
+                                    </td>
+                                    <td align="center" width="33%">
+                                        Age: {{user.age}}
+                                    </td>
+                                    <td align="center">
+                                        Gender:
+                                        {% if user.gender == 0 %}
+                                            Male
+                                        {% else %}
+                                            Female
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" width="33%">
+                                        Nation: {{user.nation}}
+                                    </td>
+                                    <td align="center" width="33%">
+                                        City: {{user.city}}
+                                    </td>
+                                    <td align="center">
+                                        Occupation: {{user.occupation}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" align="center" width="66%">
+                                        Address: {{user.address}}
+                                    </td>
+                                    <td align="center">
+                                        Email: {{user.email}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:center;" colspan="3">
+                                        Profile:
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" width="100%">
+                                        <div class="row userInfo">
+                                            <div style="text-align:center;vertical-align:middle">
+                                                <div>
+                                                    <label class="am-checkbox-inline">
+                                                        <input type="checkbox" value="FL" data-am-ucheck id="FL1" name="profileCk" >FL
+                                                    </label>
+                                                    <label class="am-checkbox-inline">
+                                                        <input type="checkbox" value="FR" data-am-ucheck id="FR1" name="profileCk">FR
+                                                    </label>
+                                                    <label class="am-checkbox-inline">
+                                                        <input type="checkbox" value="BL" data-am-ucheck id="BL1" name="profileCk">BL
+                                                    </label>
+                                                    <label class="am-checkbox-inline">
+                                                        <input type="checkbox" value="BR" data-am-ucheck id="BR1" name="profileCk">BR
+                                                    </label>
+                                                    <label class="am-checkbox-inline">
+                                                        <input type="checkbox" value="Think" data-am-ucheck id="Think1" name="profileCk">Think
+                                                    </label>
+
+                                                    <label class="am-checkbox-inline">
+                                                        <input type="checkbox" value="Feel" data-am-ucheck id="Feel1" name="profileCk">Feel
+                                                    </label>
+                                                    <label class="am-checkbox-inline">
+                                                        <input type="checkbox" value="Act" data-am-ucheck id="Act1" name="profileCk">Act
+                                                    </label>
+                                                    <label class="am-checkbox-inline">
+                                                        <input type="checkbox" value="Introvert" data-am-ucheck id="Introvert1" name="profileCk">Introvert
+                                                    </label>
+                                                    <label class="am-checkbox-inline">
+                                                        <input type="checkbox" value="Extrovert" data-am-ucheck id="Extrovert1" name="profileCk">Extrovert
+                                                    </label>
+                                                    <label class="am-checkbox-inline">
+                                                        <input type="checkbox" value="Introvert/extrovert" data-am-ucheck id="Intorvert/extrovert1" name="profileCk">Introvert/extrovert
+                                                    </label>
+                                                    <label class="am-checkbox-inline">
+                                                        <input type="checkbox" value="HSP" data-am-ucheck id="HSP1" name="profileCk">HSP
+                                                    </label>
+                                                    <label class="am-checkbox-inline">
+                                                        <input type="checkbox" value="HSS" data-am-ucheck id="HSS1" name="profileCk">HSS
+                                                    </label>
+                                                </div>
+                                                {% for profile in user.profile.all %}
+                                                    <script type="text/javascript">
+                                                        var profile = "{{profile}}"
+                                                        $(`input[value=${profile}]`).prop('checked', true);
+                                                    </script>
+                                                {% endfor %}
+                                                <br />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:center;" colspan="3">
+                                        Assigned program:
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="text-align:left;vertical-align:middle">
+                                        <ul class="am-list am-list-static">
+                                            {% if user.programs.all %}
+                                            {% for program in user.programs.all %}
+                                            <li>
+                                                <div class="row">
+                                                    <div class="am-u-lg-4">
+                                                            <a href="{% url 'programdetail' programID=program.id %}" style="margin-left:20px">{{program.name}}</a>
+                                                    </div>
+                                                    <div class="am-u-lg-2">
+                                                            <button  class="am-btn am-btn-default am-btn-danger am-btn-sm" onclick="removeProgram({{program.id}})" type="button">remove</button>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            {% endfor %}
+                                            {% else %}
+                                            <li>No program is assigned to the user.</li>
+                                            {% endif %}
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:center;" colspan="3">
+                                        Note:
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" width="100%" style="text-align:center;vertical-align:middle">
+                                        <textarea name="note" id="note" cols="30" rows="10">{{user.note}}</textarea>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="row userInfo">
+                                <div class="am-u-sm-4 am-u-m-2 am-u-md-offset-2">
+                                    <button type="button" name="setting" id="update" class="am-btn am-btn-default am-btn-danger">Update Information</button>
+                                </div>
+                                <div class="am-u-sm-4 am-u-m-2">
+                                    <button type="button" name="program" id="back" class="am-btn am-btn-default am-btn-danger">Back home</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="am-u-sm-12 am-u-md-4">
+                <div class="widget am-cf"  style="height: 600px">
+                    <div class="am-tabs" data-am-tabs>
+                        <ul class="am-tabs-nav am-nav am-nav-tabs">
+                            <li class="am-active"><a href="#tab1">User List</a></li>
+                            <li><a href="#tab2">Program List</a></li>
+                        </ul>
+                    <div class="am-tabs-bd">
+                        <div class="am-tab-panel am-fade am-in am-active" id="tab1">
+                            <div class="widget-body widget-body-md am-fr">
+                            <!--user list-->
+                                <ul class="am-list am-list-static">
+                                    {% if studentList %} {% for student in studentList %}
+                                    {% if student.id == user.id %}
+                                    <li><a href="{% url 'user' userID=student.id %}"  style="color:red">{{student.name}}</a></li>
+                                    {% else %}
+                                    <li ><a href="{% url 'user' userID=student.id %}">{{student.name}}</a></li>
+                                    {% endif %}
+                                    {% endfor %} {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    <div class="am-tab-panel am-fade" id="tab2">
+                        <div class="widget-body widget-body-md am-fr">
+                             <ul class="am-list am-list-static">
+                                {% for program in programList %}
+                                 <li>
+                                     <div class="row">
+                                         <div class="am-u-lg-6">
+                                                <a href="{% url 'programdetail' programID=program.id %}" >{{program.name}}</a>
+                                         </div>
+                                         <div class="am-u-lg-2">
+                                                <button class="am-btn am-btn-default am-btn-danger am-btn-sm" style="float:right" onclick="assignProgram({{program.id}})" type="button">Assign</button>
+
+                                         </div>
+                                     </div>
+                                 </li>
+                                {% endfor %}
+                             </ul>
+                        </div>
+                    </div>
+                </div></div>
+                </div>
+            </div>
+        </div>
+</div>
+    {% endblock %}

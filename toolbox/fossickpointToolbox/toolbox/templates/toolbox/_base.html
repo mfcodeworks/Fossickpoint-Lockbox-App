@@ -1,0 +1,111 @@
+{% load static %}
+{% include 'toolbox/_header.html'%}
+{% block csslink %}
+{% endblock %}
+    <title>{% block pagetitle %}Home {% endblock %}</title>
+</head>
+<body data-type="index">
+    <script src="{% static 'toolbox/js/theme.js' %}"></script>
+    <div class="am-g tpl-g">
+        <!-- header -->
+        <header>
+            <!-- logo -->
+            <div class="am-fl tpl-header-logo">
+                <a href="javascript:;"><img src="{% static 'toolbox/img/logoa.png' %}" alt=""></a>
+            </div>
+            <!-- right content -->
+            <div class="tpl-header-fluid">
+
+
+                <!-- other functions-->
+                <div class="am-fr tpl-header-navbar">
+                    <ul>
+                        <!-- sign out -->
+                        <li class="am-text-sm">
+                            <a href="{% url 'logout' %}">
+                                <span class="am-icon-sign-out"></span> Log out
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </header>
+        <!-- left sidebar -->
+        <div class="left-sidebar">
+            <!-- user info -->
+            <div class="tpl-sidebar-user-panel" style="padding-left:30%">
+                <div class="tpl-user-panel-slide-toggleable">
+                    <div class="tpl-user-panel-profile-picture">
+                        <img src="{% static 'toolbox/img/user04.png' %}" alt="">
+                    </div>
+                    <a href="javascript:;" class="tpl-user-panel-action-link"> <span class="am-icon-pencil"></span> Change password</a>
+                </div>
+            </div>
+
+            <!-- menu -->
+            <ul class="sidebar-nav">
+                <li class="sidebar-nav-heading">Components</li>
+                <li class="sidebar-nav-link">
+                    <a href="{% url 'contents' %}" id="contentManagement">
+                        <i class="am-icon-circle sidebar-nav-link-logo" ></i> Content management
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{% url 'category' %}" id="calendarManagement">
+                        <i class="am-icon-calendar sidebar-nav-link-logo"></i> Category management
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{% url 'program' %}" id="programManagement">
+                        <i class="am-icon-folder sidebar-nav-link-logo" ></i> Program management
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{% url 'users' %}" id="userManagement">
+                        <i class="am-icon-user sidebar-nav-link-logo"></i> User management
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="{% url 'adminPlan' %}" id="planManagement">
+                        <i class="am-icon-pencil sidebar-nav-link-logo"></i> Plan management
+                    </a>
+                </li>
+
+
+
+            </ul>
+        </div>
+        <!-- content area -->
+        <div class="tpl-content-wrapper mainContent">
+
+            <div class="container-fluid am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-9  am-btn-group am-btn-group-xs">
+                        <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span>{% block title %} Home {% endblock %} <small>Fossick toolbox system</small></div>
+
+                    </div>
+                    <!-- <button id="return" onclick="goback()" class="am-btn am-btn-default">Return</button> -->
+
+                </div>
+                <!--<div class="row">-->
+                <!--</div>-->
+
+                <script type="text/javascript">
+                    function goback() {
+                        history.go(-1);
+                    }
+                </script>
+            </div>
+
+            {% block main %}
+
+            {% endblock %}
+
+
+        </div>
+    </div>
+    {% block popup %}
+    {% endblock %}
+
+{% include 'toolbox/_footer.html'%}

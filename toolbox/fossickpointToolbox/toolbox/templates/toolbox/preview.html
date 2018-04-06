@@ -1,0 +1,10 @@
+{% extends 'toolbox/_base.html' %} {% load static %} {% block csslink %} {% endblock %} {% block title %} Preview {% endblock %}
+{% block main %}
+    <div style="margin:5% 30%">
+        <video width="600" height="480" controls>
+            <source src="../../static/{{fileaddress}}" type="video/mp4">
+        Your browser does not support the video tag.
+        </video>
+    </div>
+
+{% endblock%}

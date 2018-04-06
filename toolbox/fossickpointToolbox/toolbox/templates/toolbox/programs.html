@@ -1,0 +1,99 @@
+{% extends 'toolbox/_base.html' %} {% load static %} {% block csslink %}
+<!--<link rel="stylesheet" href="{% static 'toolbox/css/content.css' %}" />-->
+<script src="{% static 'toolbox/js/programs.js' %}"></script>
+<script src="{% static 'toolbox/js/layer.js' %}"></script> {% endblock %} {% block pagetitle %} Programs {% endblock %} {% block title %} Program {% endblock %} {% block main %}
+
+
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+            <div class="widget am-cf">
+                <div class="widget-head am-cf">
+                    <div class="widget-title  am-cf">Program list</div>
+                </div>
+                <div class="widget-body">
+                    <div>
+                        <div class="am-u-sm-12 am-u-md-12 am-u-lg-8">
+                            <div class="am-form-group">
+                                <div class="am-btn-toolbar">
+                                    <div class="am-btn-group am-btn-group-xs">
+                                        <button type="button" class="am-btn am-btn-default am-btn-danger" id="add">
+                                            <span class="am-icon-plus"></span> Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <form>
+                            <div class="am-u-sm-12 am-u-md-12 am-u-lg-4">
+                                <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                    <input type="text" class="am-form-field" name="keywordSearch" id="keywordSearch" required>
+                                    <span class="am-input-group-btn">
+                                        <button class="am-btn  am-btn-default am-btn-danger tpl-table-list-field am-icon-search" id="search"></button>
+                                    </span>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    {% if programList %} {% for program in programList %}
+
+                    <div class="am-u-sm-18 am-u-md-9 am-u-lg-6">
+
+                        <div class="widget widget-primary am-cf">
+
+                            <div class="widget-statistic-header" style="font-size:18px">
+                                {{program.name}}
+                                <span class="am-btn-group am-btn-group-xs am-fr" style="padding-left:40px">
+                                    <button type="button" class="am-btn am-btn-primary" style="margin-right:10px" onclick="viewProgram('{{program.id}}')">
+                                        <span class="am-icon-plus"></span>View</button>
+                                    <button type="button" class="am-btn am-btn-primary" onclick="deleteProgram({{program.id}})">
+                                        <span class="am-icon-plus"></span>Delete</button>
+
+                                </span>
+                            </div>
+                            <div class="widget-statistic-body">
+                                <div style="font-size:25px" align="center">
+                                    Description: {{program.describe}}
+                                </div>
+                                <div style="font-size:25px" align="center">
+                                    Contents number: {{program.contentsNumber}}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %} {% endif %}
+
+                </div>
+
+            </div>
+        </div>
+
+    {% endblock %} {% block popup %}
+    <div id="addProgram" style="display:none">
+        <div class="tpl-login-content">
+            <!--<form class="am-form tpl-form-line-form" id="contentForm">-->
+            <!--{% csrf_token %}-->
+            <div class="am-form tpl-form-line-form">
+                <fieldset>
+                    <legend>Add program</legend>
+                </fieldset>
+                <div class="am-form-group">
+                    <label class="tag">Program name</label>
+                    <input type="text" class="" id="programName" name="name" placeholder="Please input program name">
+                </div>
+                <div class="am-form-group">
+                    <label class="tag">Program description</label>
+                    <input type="text" class="" id="programDescription" name="description" placeholder="Please input program description">
+                </div>
+                <div class="am-form-group">
+                    <div class="am-g">
+
+                        <div class="am-u-sm-5 am-u-sm-offset-3">
+                            <button id="create" class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn">Create program </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}

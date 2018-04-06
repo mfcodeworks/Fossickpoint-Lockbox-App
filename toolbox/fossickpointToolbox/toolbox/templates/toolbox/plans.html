@@ -1,0 +1,99 @@
+{% extends 'toolbox/_base.html' %} {% load static %} {% block csslink %}
+<!--<link rel="stylesheet" href="{% static 'toolbox/css/content.css' %}" />-->
+<script src="{% static 'toolbox/js/layer.js' %}"></script>
+
+{% endblock %}
+{% block pagetitle %} Plans {% endblock %}
+{% block title %} Plans {% endblock %}
+{% block main %}
+<div class="row-content am-cf">
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+            <div class="widget am-cf">
+                <div class="widget-head am-cf">
+                    <div class="widget-title  am-cf">Plan list</div>
+                </div>
+                <div class="widget-body">
+                    <!-- <div>
+                        <div class="am-u-sm-12 am-u-md-12 am-u-lg-8">
+                            <div class="am-form-group">
+                                <div class="am-btn-toolbar">
+                                    <div class="am-btn-group am-btn-group-xs">
+                                        <button type="button" class="am-btn am-btn-default am-btn-danger" id="add">
+                                            <span class="am-icon-plus"></span> Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    {% if planList %}
+                    {% for plan in planList %}
+
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+
+                        <div class="widget widget-default  am-cf" style="background-color:rgb(227, 227, 227);">
+                            <form action="" class="am-form">
+                            <legend>
+                                <input type="text" value="{{plan.name}}" id="planName-{{plan.id}}">
+                            </legend>
+                            <div class="am-form-group">
+                                    <label for="planPrice-{{plan.id}}">Plan price</label>
+                                    <input type="text" value="{{plan.price}}" id="planPrice-{{plan.id}}">
+                            </div>
+                            <div class="am-form-group">
+                                    <label for="planUrl-{{plan.id}}">Acuity Package Url</label>
+                                     <input type="url" value="{{plan.plan_acuity_package_link}}" id="planUrl-{{plan.id}}">
+                            </div>
+                            <div class="am-form-group">
+                                    <label for="planAppointment-{{plan.id}}">Acuity appointment ID </label>
+                                    <input type="text" value="{{plan.plan_acuity_appointment_id}}" id="planAppointment-{{plan.id}}">
+                            </div>
+                            <div class="am-form-group">
+
+                                <label for="planDescription-{{plan.id}}">Description(Please input semicolon after a description)</label>
+
+                                    <textarea id="planDescription-{{plan.id}}" rows="10">{{plan.description}}
+                                    </textarea>
+                            </div>
+
+
+                            </form>
+                                    <button type="button" class="am-btn am-btn-danger am-btn-sm" style="margin-left:40%" onclick="updatePlan({{plan.id}})"><span class="am-icon-plus"></span>Update</button>
+                                    <!-- <button type="button" class="am-btn am-btn-danger" style="margin-left:20px"  onclick="deleteProgram({{program.id}})"><span class="am-icon-plus"></span>Delete</button> -->
+                        </div>
+                    </div>
+
+                    {% endfor %}
+                    {% endif %}
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+            function updatePlan(planID) {
+                var form = new FormData();
+                form.append("planID", planID);
+                form.append("name", $(`#planName-${planID}`).val());
+                form.append("price", $(`#planPrice-${planID}`).val());
+                form.append("url", $(`#planUrl-${planID}`).val());
+                form.append("appointmentID", $(`#planAppointment-${planID}`).val());
+                form.append("description", $(`#planDescription-${planID}`).val());               
+                $.ajax({
+                    type: 'POST',
+                    url: location.href,
+                    data: form,
+                    processData: false,  // 告诉jquery不转换数据
+                    contentType: false,  // 告诉jquery不设置内容格式
+
+                    success: function (data) {
+                        alert(data["desc"]);
+                        location.reload();
+                    }
+                }) 
+            }
+    </script>
+    {% endblock %}
+
+

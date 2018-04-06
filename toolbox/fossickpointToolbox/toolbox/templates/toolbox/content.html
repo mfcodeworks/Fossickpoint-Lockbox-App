@@ -1,0 +1,320 @@
+{% extends 'toolbox/_base.html' %} {% load static %} {% block csslink %} {% endblock %}{% block pagetitle %} Content {% endblock %} {% block title %} Content {% endblock %} {% block main %}
+<!-- <script src="{% static 'toolbox/js/jquery.sortable.js' %}"></script> -->
+<script src="//cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script src="{% static 'toolbox/js/program.js' %}"></script>
+<script src="{% static 'toolbox/js/content.js' %}"></script>
+<script src="{% static 'toolbox/js/layer.js' %}"></script>
+<!-- bootstrap.min.js support the category tree dropdown -->
+<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{% load mptt_tags %}
+<style>
+ li p {
+     padding-left: 10px;
+ }
+ .dropdown-submenu {
+            position: relative;
+        }
+        .dropdown-submenu > .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -6px;
+            margin-left: -1px;
+            -webkit-border-radius: 0 6px 6px 6px;
+            -moz-border-radius: 0 6px 6px;
+            border-radius: 0 6px 6px 6px;
+        }
+        .dropdown-submenu:hover > .dropdown-menu {
+            display: block;
+        }
+        .dropdown-submenu > a:after {
+            display: block;
+            content: " ";
+            float: right;
+            width: 0;
+            height: 0;
+            border-color: transparent;
+            border-style: solid;
+            border-width: 5px 0 5px 5px;
+            border-left-color: #ccc;
+            margin-top: 5px;
+            margin-right: -10px;
+        }
+        .dropdown-submenu:hover > a:after {
+            border-left-color: #fff;
+        }
+        .dropdown-submenu.pull-left {
+            float: none;
+        }
+        .dropdown-submenu.pull-left > .dropdown-menu {
+            left: -100%;
+            margin-left: 10px;
+            -webkit-border-radius: 6px 0 6px 6px;
+            -moz-border-radius: 6px 0 6px 6px;
+            border-radius: 6px 0 6px 6px;
+        }
+        #searchCategory {
+            width: 150px;
+        }
+</style>
+<div class="row-content am-cf">
+    <div class="row am-cf">
+        <!-- program box -->
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-8">
+            <form id="contentForm" class="am-form">
+                <div class="widget am-cf">
+                    <div class="widget-head am-cf">
+                        <div class="widget-title am-fl">Content Details</div>
+                    </div>
+                    <fieldset>
+                        <div class="row">
+                            <div class="am-form-group am-u-lg-12">
+                                <label for="contentName">Content Name</label>
+                                <input type="text" class="" id="contentName" value="{{content.name}}" name="contentName">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="am-form-group am-form-file am-u-lg-6">
+                                <label for="doc-ipt-file-2">Content file</label>
+                                <div>
+                                    <button type="button" class="am-btn am-btn-danger am-btn-sm">
+                                        <i class="am-icon-cloud-upload"></i> Please select file to upload
+                                    </button>
+                                    <input type="file" id="update-file"><span><p id="update-file-list"></p></span>                               
+                                </div>
+                            </div>
+                            <div class="am-form-group am-form-file am-u-lg-6">
+                                <label for="doc-ipt-file-2">Content thumbnail</label>
+                                <div>
+                                    <button type="button" class="am-btn am-btn-danger am-btn-sm">
+                                        <i class="am-icon-cloud-upload"></i> Please select thumbnail to upload
+                                    </button>
+                                    <input type="file" id="update-thumbnail-file"><span><p id="update-thumbnail-list"></p></span>                                
+                                </div>
+                                <script>
+                                    $(function () {
+                                        $('#update-file').on('change', function () {
+                                            var fileNames = '';
+                                            $.each(this.files, function () {
+                                                fileNames += '<span class="am-badge">' + this.name + '</span> ';
+                                            });
+                                            $('#update-file-list').html(fileNames);
+                                        });
+                                    });
+                                    $(function () {
+                                        $('#update-thumbnail-file').on('change', function () {
+                                            var fileNames = '';
+                                            $.each(this.files, function () {
+                                                fileNames += '<span class="am-badge">' + this.name + '</span> ';
+                                            });
+                                            $('#update-thumbnail-list').html(fileNames);
+                                        });
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                        <div class="row">
+                        </div>
+                        <div class="row">
+                            <div class="am-form-group am-u-lg-4">
+                                <label for="contentType">Content Type</label>
+                                <select id="contentType">
+                                    <option value="doc">doc</option>
+                                    <option value="pdf">pdf</option>
+                                    <option value="image">image</option>
+                                    <option value="video">video</option>
+                                    <option value="audio">audio</option>
+                                    <option value="other">other</option>
+                                    <script type="text/javascript">
+                                        $("#contentType option[value='{{content.type}}']").attr("selected", true);
+                                    </script>
+                                </select>
+
+                                <span class="am-form-caret"></span>
+                            </div>
+
+                            <div class="am-form-group am-u-lg-4">
+                                <label for="contentFocus">Content Focus</label>
+                                <select id="contentFocus">
+                                    <option value="Emotional Intelligence">Emotional Intelligence</option>
+                                    <option value="Social Intelligence">Social Intelligence</option>
+                                    <option value="Self Actualization">Self Actualization</option>
+                                    <script type="text/javascript">
+                                        $("#contentFocus option[value='{{content.focus}}']").attr("selected", true);
+                                    </script>
+                                </select>
+                                <span class="am-form-caret"></span>
+                            </div>
+                            <div class="am-form-group am-u-lg-4">
+                                <label for="contentTag">Content Focus</label>
+                                <select id="contentTag">
+                                    <option value="Images">Images</option>
+                                    <option value="Formulas">Formulas</option>
+                                    <option value="Activities">Activities</option>
+                                    <option value="Skills">Skills</option>
+                                    <option value="Social frameworks">Social frameworks</option>
+                                    <option value="Concepts">Concepts</option>
+                                    <option value="Myths & notions">Myths & notions</option>
+                                    <option value=Principles>Principles</option>
+                                    <script type="text/javascript">
+                                        $("#contentTag option[value='{{content.tag}}']").attr("selected", true);
+                                    </script>
+                                </select>
+                                <span class="am-form-caret"></span>
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <div class="row">
+                                <div class="am-u-lg-2">
+                                    <label class="tag">Category:</label>
+                                </div>
+                                <div class="am-u-lg-10">
+                                        <div class="dropdown">
+                                                <button role="button" data-toggle="dropdown" href="#" id="searchCategory" class="am-btn-danger">All categories
+
+                                                </button>
+                                                <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dLabel">
+                                                        {% recursetree nodes %}
+                                                        <li class="dropdown-submenu">
+                                                        {% if node.is_leaf_node %}
+                                                            <a class="category" id="category{{node.id}}" href="javascript::" onclick="selectCategory('{{node.name}}')"> {{node.name}}</a>
+                                                        {% else %}
+                                                            <a class="category" id="category{{node.id}}" href="javascript::" > {{node.name}}</a>
+                                                        {% endif %}
+                                                            {% if not node.is_leaf_node %}
+                                                            <ul class="dropdown-menu">
+                                                                    {{ children }}
+                                                            </ul>
+                                                            {% endif %}
+                                                        </li>
+                                                        {% endrecursetree %}
+                                                </ul>
+                                            </div>
+                                </div>
+                                <script>
+                                    function selectCategory(categoryName) {
+                                        $("#searchCategory").html(categoryName);
+                                    }
+                                </script>
+                                <script>
+                                    var cate = "{{content.category}}";
+                                    selectCategory(cate);
+                                </script>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="am-form-group am-u-lg-12">
+                                <label for="contentProfile" style="display:block">Content Profile</label>
+                                <div class="row" id="contentProfile">
+                                    <div class="am-u-lg-3">
+                                        B.Dominance
+                                    </div>
+                                    <div class="am-u-lg-9">
+                                        <label class="am-checkbox-inline">
+                                            <input type="checkbox" value="FL" data-am-ucheck id="FL1" name="chk">FL
+                                        </label>
+                                        <label class="am-checkbox-inline">
+                                            <input type="checkbox" value="FR" data-am-ucheck id="FR1" name="chk">FR
+                                        </label>
+                                        <label class="am-checkbox-inline">
+                                            <input type="checkbox" value="BL" data-am-ucheck id="BL1" name="chk">BL
+                                        </label>
+                                        <label class="am-checkbox-inline">
+                                            <input type="checkbox" value="BR" data-am-ucheck id="BR1" name="chk">BR
+                                        </label>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="am-u-sm-3">
+                                        Temperament
+                                    </div>
+                                    <div class="am-u-sm-9">
+                                        <label class="am-checkbox-inline">
+                                            <input type="checkbox" value="Think" data-am-ucheck id="Think1" name="chk">Think
+                                        </label>
+                                        <label class="am-checkbox-inline">
+                                            <input type="checkbox" value="Feel" data-am-ucheck id="Feel1" name="chk">Feel
+                                        </label>
+                                        <label class="am-checkbox-inline">
+                                            <input type="checkbox" value="Act" data-am-ucheck id="Act1" name="chk">Act
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="am-u-sm-3">
+                                        Arosual
+                                    </div>
+                                    <div class="am-u-sm-9">
+                                        <label class="am-checkbox-inline">
+                                            <input type="checkbox" value="Introvert" data-am-ucheck id="Introvert1" name="chk">Introvert
+                                        </label>
+                                        <label class="am-checkbox-inline">
+                                            <input type="checkbox" value="Extrovert" data-am-ucheck id="Extrovert1" name="chk">Extrovert
+                                        </label>
+                                        <label class="am-checkbox-inline">
+                                            <input type="checkbox" value="Introvertorextrovert" data-am-ucheck id="Introvert/extrovert" name="chk">Introvert/extrovert
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="am-u-sm-3">
+                                        Stimuli
+                                    </div>
+                                    <div class="am-u-sm-9">
+                                        <label class="am-checkbox-inline">
+                                            <input type="checkbox" value="HSP" data-am-ucheck id="HSP1" name="chk">HSP
+                                        </label>
+                                        <label class="am-checkbox-inline">
+                                            <input type="checkbox" value="HSS" data-am-ucheck id="HSS1" name="chk">HSS
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            {% for profile in content.profile.all %}
+                                <script type="text/javascript">
+                                    var profile = "{{profile}}"
+                                    if (profile == "Introvert/extrovert")
+                                        profile = "Introvertorextrovert";
+                                    $(`input[value=${profile}]`).prop('checked', true);
+                                </script>
+                            {% endfor %}
+                        </div>
+
+                        <div class="row">
+                        <div class="am-form-group am-u-lg-12">
+                            <label for="contentDiscription">Content Description</label>
+                            <textarea class="" rows="5" id="contentDiscription">{{content.keyword}}</textarea>
+                        </div>
+                        <div class="row">
+                            <p style="margin-left:40%" class="am-u-lg-12">
+                                <button type="button" name="setting" id="update" class="am-btn am-btn-default am-btn-danger" onclick="updateContent()">
+                                    Update
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+
+                </fieldset>
+
+
+                </div>
+            </form>
+        </div>
+        <!-- content box -->
+        <div class="am-u-sm-12 am-u-md-4 am-u-lg-4">
+            <div class="widget am-cf">
+                <div class="widget-head am-cf">
+                    <div class="widget-title  am-cf">Related program list</div>
+                </div>
+                    <div style="margin-top:40px;" id="contentDiv">
+                        <ol id="contentList" class="am-list-static am-list-striped" style="height: 500px;" >
+                            {% if programList %} {% for program in programList %}
+                            <li id="{{content.id}}"><a href="{% url 'programdetail' programID=program.id %}">{{program.name}}</a></li>
+                            {% endfor %} {% endif %}
+                        </ol>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+    {% endblock %}

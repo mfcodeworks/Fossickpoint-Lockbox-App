@@ -1,0 +1,32 @@
+{% load static %} {% include 'toolbox_user/__header.html' %}
+    <!-- PAGE BANNER SECTION -->
+<div class="page-banner-section section">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-banner-content" style="">
+                    <h1>My program</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-section section">
+
+    <div class="container">
+
+        <div class="program_list">
+            <div class="row">
+
+            {% for program in programs %}
+                <div class="program_box col-md-3">
+                    <a href="{% url 'user_program' programID=program.id %}">{{program.name}}</a>
+                </div>
+            {% endfor %}
+            </div>
+            
+        </div>
+
+    </div>
+</div>
+

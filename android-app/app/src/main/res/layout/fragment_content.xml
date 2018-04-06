@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:id="@+id/action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#c1282d"
+        android:gravity="center_vertical"
+        android:paddingLeft="22dp"
+        android:paddingRight="22dp">
+
+        <com.fossickpoint.fonts.HelveticaBold
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:text="Category"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="25dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            app:srcCompat="@drawable/ic_search_white_18dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/action_bar"
+        android:background="#eeeeee"
+        android:visibility="visible">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#eeeeee"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
+
+                    <com.fossickpoint.fonts.HelveticaBold
+                        android:id="@+id/textView8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="12dp"
+                        android:text="Identity/Purpose"
+                        android:textColor="#2d2c2c"
+                        android:textSize="20dp" />
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/view_pager_identity"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp" />
+
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/tab_dots_identity"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        app:tabBackground="@drawable/tab_selector"
+                        app:tabGravity="center"
+                        app:tabIndicatorHeight="0dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
+
+                    <com.fossickpoint.fonts.HelveticaBold
+                        android:id="@+id/textView10"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="12dp"
+                        android:text="Communication"
+                        android:textColor="#2d2c2c"
+                        android:textSize="20dp" />
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/view_pager_communication"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp" />
+
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/tab_dots_communication"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        app:tabBackground="@drawable/tab_selector"
+                        app:tabGravity="center"
+                        app:tabIndicatorHeight="0dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_redeem_code"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/action_bar"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="30dp"
+                android:paddingTop="30dp">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    app:srcCompat="@drawable/icon" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.fossickpoint.fonts.HelveticaNeue
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Uh oh"
+                    android:textAlignment="center"
+                    android:textColor="#c1282d"
+                    android:textSize="24dp" />
+
+                <com.fossickpoint.fonts.HelveticaNeue
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="24dp"
+                    android:paddingRight="24dp"
+                    android:paddingTop="15dp"
+                    android:text="Seems you are not assigned to a certain plan yet to view this content"
+                    android:textAlignment="center"
+                    android:textColor="#897c80"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="bottom|center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingTop="5dp">
+
+                <RelativeLayout
+                    android:id="@+id/button_verify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_button_red"
+                    android:elevation="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="45dp"
+                    android:paddingRight="45dp"
+                    android:paddingTop="5dp">
+
+                    <com.fossickpoint.fonts.HelveticaNeue
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="VERIFY PLAN"
+                        android:textColor="#FFFFFF"
+                        android:textSize="30dp" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

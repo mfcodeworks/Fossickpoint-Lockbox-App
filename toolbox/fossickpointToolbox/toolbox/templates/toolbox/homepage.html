@@ -1,0 +1,76 @@
+{% extends 'toolbox/_base.html' %}
+{% block main %}
+            <div class="row-content am-cf">
+                <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                    <div class="widget widget-primary am-cf">
+                        <div class="widget-statistic-header" style="font-size:18px">
+                            Content count
+                        </div>
+                        <div class="widget-statistic-body">
+                            <div class="widget-statistic-value" align = "center">
+                                <a href="{% url 'contents' %}">{{contentCount}}</a>
+                            </div>
+
+                            <span class="widget-statistic-icon am-icon-credit-card-alt"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                    <div class="widget widget-primary am-cf">
+                        <div class="widget-statistic-header" style="font-size:18px" >
+                            User Count
+                        </div>
+                        <div class="widget-statistic-body">
+                            <div class="widget-statistic-value" align = "center">
+                                <a href="{% url 'users' %}">{{userCount}}</a>
+                            </div>
+                            <span class="widget-statistic-icon am-icon-credit-card-alt"></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row-content am-cf" style="margin-top: -40px;">
+                <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                        <div class="widget widget-primary am-cf">
+                            <div class="widget-statistic-header" style="font-size:18px" >
+                                Program Count
+                            </div>
+                            <div class="widget-statistic-body">
+                                <div class="widget-statistic-value" align = "center">
+                                    <a href="{% url 'program' %}">{{programCount}}</a>
+                                </div>
+                                <span class="widget-statistic-icon am-icon-credit-card-alt"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                        <div class="widget widget-primary am-cf">
+                            <div class="widget-statistic-header" style="font-size:18px" >
+                                Plan Count
+                            </div>
+                            <div class="widget-statistic-body">
+                                <div class="widget-statistic-value" align = "center">
+                                    <a href="{% url 'adminPlan' %}">{{planCount}}</a>
+                                </div>
+                                <span class="widget-statistic-icon am-icon-credit-card-alt"></span>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="row-content am-cf" style="margin-top: -40px;">
+                <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                        <div class="widget widget-primary am-cf">
+                            <div class="widget-statistic-header" style="font-size:18px" >
+                                Category Count
+                            </div>
+                            <div class="widget-statistic-body">
+                                <div class="widget-statistic-value" align = "center">
+                                    <a href="{% url 'category' %}">{{categoryCount}}</a>
+                                </div>
+                                <span class="widget-statistic-icon am-icon-credit-card-alt"></span>
+                            </div>
+                        </div>
+                </div>                
+            </div>
+{% endblock %}

@@ -1,0 +1,135 @@
+<!doctype html> {% load static %}
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Fossickpoint toolbox</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'toolbox_user/img/logo-icon.png'%}">
+
+    <!-- All CSS Files -->
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" href="{% static 'toolbox_user/css/bootstrap.min.css'%}">
+    <!-- Icon Font -->
+    <link rel="stylesheet" href="{% static 'toolbox_user/css/font-awesome.min.css'%}">
+    <link rel="stylesheet" href="{% static 'toolbox_user/css/pe-icon-7-stroke.css'%}">
+    <!-- Plugins css file -->
+    <link rel="stylesheet" href="{% static 'toolbox_user/css/plugins.css'%}">
+    <!-- Theme main style -->
+    <link rel="stylesheet" href="{% static 'toolbox_user/css/style.css'%}">
+    <!-- Responsive css -->
+    <link rel="stylesheet" href="{% static 'toolbox_user/css/responsive.css'%}">
+
+    <!-- Modernizr JS -->
+    <script src="{% static 'toolbox_user/js/vendor/modernizr-2.8.3.min.js'%}"></script>
+    <!-- jQuery latest version -->
+    <script src="{% static 'toolbox_user/js/vendor/jquery-3.1.1.min.js'%}"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+    <!-- Body main wrapper start -->
+    <div class="wrapper">
+
+        <!-- START HEADER SECTION -->
+        <header class="header-section section sticker">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- logo -->
+                        <div class="header-logo float-left col-md-3 col-sm-8 col-xs-12">
+                            <a href="{% url 'home' %}">
+                                <img src="{% static 'toolbox_user/img/logo2.png'%}" alt="main logo">
+                            </a>
+                        </div>
+                        <!-- header-search & total-cart -->
+                        <div class="float-right">
+                            <div class="header-option-btns float-right">
+                                <!-- header-search -->
+                                <div class="header-search float-left">
+                                    <button class="search-toggle" data-toggle="dropdown">
+                                            <span class="fa fa-search"></span>Search
+                                    </button>
+                                    <div class="dropdown-menu header-search-form">
+                                        <form action="#">
+                                            <input type="text" placeholder="Search" id="keyword">
+                                            <button onclick="searchContent()" type="button">
+                                                <i class="fa fa-long-arrow-right"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- header Account -->
+                                <!-- <div class="header-account float-left">
+                                    <ul>
+                                        <li>
+                                            <a href="#">
+                                                Welcome,{{user.userName}}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div> -->
+                                <!-- Header Cart -->
+
+                            </div>
+                            <nav class="main-menu menu-right float-right">
+                                <ul>
+                                    <li class="active">
+                                        <a href="{% url 'home' %}">Home</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Contents</a>
+                                        <ul class="sub-menu">
+                                            {% for rootCategory in rootCategories%}
+                                            <li>
+                                                <a href="{% url 'contents' category=rootCategory.name %}">{{rootCategory.name}}</a>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'plan' %}">Plans</a>
+                                        <!-- <ul class="sub-menu">
+                                            <li><a href="blog.html">blog</a></li>
+                                            <li><a href="blog-details.html">blog details</a></li>
+                                        </ul> -->
+                                    </li>
+                                    <li>
+                                        <a href="#">My Account</a>
+                                        <ul class="sub-menu">
+                                                <li>
+                                                    <a href="{% url 'profile' %}">My profile</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{% url 'programlist' %}">My program</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{% url 'session' %}">My session</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{% url 'user_logout' %}">Log out</a>
+                                                </li>
+    
+                                            </ul> 
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="mobile-menu"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- END HEADER SECTION -->
+<script>
+    function searchContent() {
+        var keyword = $("#keyword").val();
+        var url = "{% url 'search' %}";
+        window.location.href=url + "?keyword=" + keyword;
+    }
+</script>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>FossickPoint Toolbox</title>
+    <meta name="description" content="This is an index page">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="{% static 'toolbox/css/amazeui.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'toolbox/css/amazeui.datatables.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'toolbox/css/app.css' %}">
+    <link rel="icon" href="http://fossickpoint.com.au/wp-content/uploads/2017/04/cropped-FP-DOT_20170426-32x32.png" sizes="32x32" />
+    <link rel="icon" href="http://fossickpoint.com.au/wp-content/uploads/2017/04/cropped-FP-DOT_20170426-192x192.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="http://fossickpoint.com.au/wp-content/uploads/2017/04/cropped-FP-DOT_20170426-180x180.png" />
+    <script src="{% static 'toolbox/js/jquery.min.js' %}"></script>
+</head>
+
+<body data-type="login">
+    <script src="{% static 'toolbox/js/theme.js' %}"></script>
+
+    <div class="am-g tpl-g">
+
+
+        <div class="tpl-login">
+            <div class="tpl-login-content" style="margin-top:5%">
+                <div class="tpl-login-logo">
+
+                </div>
+
+
+
+                <div class="am-form tpl-form-line-form">
+                    <fieldset>
+                        <legend>Sign up</legend>
+                        <div class="am-form-group">
+                                <label for="doc-ipt-email-1">Email:</label>
+                                <input type="email" class="" id="doc-ipt-email-1" placeholder="Please input an account email">
+                        </div>
+                        <div class="am-form-group">
+                            <label for="doc-ipt-username-1">Username:</label>
+                            <input type="text" class="" id="doc-ipt-username-1" placeholder="Please input a username">
+                        </div>
+                        <div class="am-form-group">
+                            <label for="doc-ipt-password-1">Password:</label>
+                            <input type="password" class="" id="doc-ipt-password-1" placeholder="Please input password">
+                        </div>
+                        <div class="am-form-group">
+                            <label class="doc-ipt-gender">Gender:</label>
+                            <label class="am-radio-inline" style="padding-left:25%">
+                            <input type="radio"  value="male" name="docInlineRadio" id = "male"> male
+                        </label>
+                            <label class="am-radio-inline" style="padding-left:25%">
+                            <input type="radio"  value="female" name="docInlineRadio" id = "female"> female
+                        </label>
+                        </div>
+                        <div class="am-form-group" id="tips"></div>
+                        <div class="am-form-group">
+                            <div class="am-g">
+
+                                <div class="am-u-sm-5 am-u-sm-offset-1">
+                                    <button id="register" class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn">Sign up</button>
+                                </div>
+                                <div class="am-u-sm-5 am-u-end">
+                                    <a id="reset" class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn">Reset</a>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{% url 'user_login' %}" style="padding-left:20%">Already have an account? Sign in now</a>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'toolbox/js/amazeui.min.js' %}"></script>
+    <script src="{% static 'toolbox/js/app.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#register").click(function () {
+                var username = "";
+                var password = "";
+                var email = "";
+                var gender = "";
+                username = $("#doc-ipt-username-1").val();
+                password = $("#doc-ipt-password-1").val();
+                email = $("#doc-ipt-email-1").val();
+                gender = jQuery('input[type="radio"][name="docInlineRadio"]:checked').val();
+                if (username == "" || password == "" || email == "" || gender == "") {
+                    $("#tips").html("Please fill the register form");                    
+                    $("#tips").css("color", "red");
+                }
+                else {
+                    var pattern= /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;  
+                    var strEmail=pattern.test(email);
+                    if (!strEmail) {
+                        $("#tips").html("Please input a correct email");                    
+                        $("#tips").css("color", "red");                        
+                    }
+                    else {
+                        $.post("./register/", { "userName": username, "password": password, "email":email, "gender": gender, csrfmiddlewaretoken: '{{ csrf_token }}' }, function (result) {
+                            if (result["status"] == 1) {
+                                alert("Sign up successfully")
+                                location.href = "../";
+                            }
+                            else {                           
+                                $("#tips").html("The email has been registered");
+                                $("#tips").css("color", "red");
+                                reset()
+                            }
+
+                        });
+                    }
+                }
+
+            });
+            $("#reset").click(function () {
+                $("#doc-ipt-username-1").val("");
+                $("#doc-ipt-password-1").val("");
+                jQuery('input[type="radio"][name="docInlineRadio"]').removeAttr("checked");
+            });
+        });
+        function reset() {
+            $("#doc-ipt-username-1").val("");
+            $("#doc-ipt-password-1").val("");
+            jQuery('input[type="radio"][name="docInlineRadio"]').removeAttr("checked");
+        }
+    </script>
+</body>
+
+</html>

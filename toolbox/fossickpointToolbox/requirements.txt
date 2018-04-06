@@ -1,0 +1,6 @@
+Django==1.11.3
+django-cors-headers==2.1.0
+django-js-asset==0.1.1
+django-mptt==0.9.0
+Pillow==5.0.0
+pytz==2017.3

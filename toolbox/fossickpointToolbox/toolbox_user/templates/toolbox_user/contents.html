@@ -1,0 +1,79 @@
+﻿{% load static %} {% include 'toolbox_user/__header.html' %}
+<link rel="stylesheet" type="text/css" href="{% static 'toolbox_user/css/swiper.css' %}" />
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'toolbox_user/css/slick-theme.css' %}" /> -->
+<script type="text/javascript" src="{% static 'toolbox_user/js/swiper.min.js' %}"></script>
+<style>
+    .slideControl {
+        margin-top: 170px;
+    }
+</style>
+<div class="container categoryArea">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="category">
+                <h3>Categories:</h3>
+                <ul>
+                    {% for category in siblings %} {% if category.name == currentCategory %}
+                    <li>
+                        <a href="{% url 'contents' category=category.name %}" style="color:#c1282d">{{category.name}}</a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="{% url 'contents' category=category.name %}">{{category.name}}</a>
+                    </li>
+                    {% endif %} {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="swiper-button-prev  slideControl"></div>
+        </div>
+        <div class="col-md-7">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    {% for content in children %}
+                    <div class="swiper-slide">
+                        <div class="name_box">
+                            <div class="slide-img">
+                                <a href="{% url 'user_content' contentID=content.id %}">
+                                    <img src="{% static content.thumbnail %}" class="img-responsive">
+                                </a>
+                            </div>
+                            <div class="categoryName_box">
+                                <a class="categoryName">{{content.name}}</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-1">
+            <div class="swiper-button-next slideControl"></div>
+    
+        </div>
+    </div>
+
+
+</div>
+</div>
+</div>
+</div>
+<script>        
+    var mySwiper = new Swiper('.swiper-container', {
+        slidesPerView: 2,
+        slidesPerGroup: 2,
+        pagination: {
+            el: '.swiper-pagination',
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        slidesOffsetBefore: 50,
+    });       
+</script>
+</body>

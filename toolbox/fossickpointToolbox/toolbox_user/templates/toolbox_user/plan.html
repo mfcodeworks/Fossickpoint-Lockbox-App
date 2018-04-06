@@ -1,0 +1,206 @@
+{% load static %} {% include 'toolbox_user/__header.html' %}
+<style>
+    .plan_img {
+        width: 20%;
+    }
+</style>
+<div class="product-section section pt-120 pb-120">
+    <div class="container">
+        <div class="user-plan-info row">
+            <div class="col-xs-12, col-md-12">
+                <h1>Plans</h1>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p style="color:black">Dear <span style="color:red">{{user.userName}}</span>, you are the
+                            {% if user.toolbox_user_type == 1 %}
+                            <span style="color:red">Fee plan</span>
+                            {% endif %}
+                            {% if user.toolbox_user_type == 2 %}
+                            <span style="color:red">Unlimited plan</span>
+                            {% endif %}
+                            {% if user.toolbox_user_type == 3 %}
+                            <span style="color:red">Individualized plan</span>
+                            {% endif %}
+                            {% if user.toolbox_user_type  == 4 %}
+                            <span style="color:red">Premium plan</span>
+                            {% endif %}
+                            user now.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="#" onclick="verifyCode()" style="color: #EE3B3B; float: right">click here to verify your plan if you have purchased one.</a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="row table-container">
+            <table id="plan-table">
+                <tr>
+                    {% for plan in planList %}
+                    <td class="plan-{{forloop.counter}}">
+                        <div class="plan-box">
+                            <div class="plan-title">
+                                {{plan.name}}
+                            </div>
+                        </div>
+                    </td>
+                    {% endfor %}
+                    <!--<td class="plan-1">-->
+                        <!--<div class="plan-box">-->
+                            <!--<div class="plan-title">-->
+                                <!--Free Plan-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td class="plan-2">-->
+                        <!--<div class="plan-box">-->
+
+                            <!--<div class="plan-title">-->
+                                <!--Unlimited Plan-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td class="plan-3">-->
+                        <!--<div class="plan-box">-->
+
+                            <!--<div class="plan-title">-->
+                                <!--Individualized Plan-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td class="plan-4">-->
+                        <!--<div class="plan-box">-->
+
+                            <!--<div class="plan-title">-->
+                                <!--Premium Plan-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                </tr>
+                <tr>
+                    {% for plan in planList %}
+                    <td>
+                        <div class="plan-intro-up">
+                            <h4>Per month</h4>
+                            <h2>{{plan.price}}</h2>
+                        </div>
+                    </td>
+                    {% endfor %}
+                    <!--<td>-->
+                        <!--<div class="plan-intro-up">-->
+                            <!--<h4>Per month</h4>-->
+                            <!--<h2>Free</h2>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<div class="plan-intro-up">-->
+                            <!--<h4>Per month</h4>-->
+                            <!--<h2>$AU 9.99</h2>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<div class="plan-intro-up">-->
+                            <!--<h4>Per month</h4>-->
+                            <!--<h2>$AU 39.99</h2>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<div class="plan-intro-up">-->
+                            <!--<h4>Per month</h4>-->
+                            <!--<h2>$AU 69.99</h2>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                </tr>
+                <tr>
+                    {% for plan in planList %}
+                    <td  class="plan-intro">
+                        {% for description in plan.description %}
+                        <p>{{description}}</p>
+                        {% endfor %}
+                        <!--<p>Limited access to content</p>-->
+                    </td>
+                    {% endfor %}
+                    <!--<td  class="plan-intro">-->
+
+                        <!--<p>Keywords search and module topics</p>-->
+                        <!--<p>Limited access to content</p>-->
+                    <!--</td>-->
+                    <!--<td class="plan-intro">-->
+
+                            <!--<p>Keywords search and module topics</p>-->
+                            <!--<p>Unlimited access to content</p>-->
+
+                    <!--</td>-->
+                    <!--<td  class="plan-intro">-->
+
+                            <!--<p>Keywords search and module topics</p>-->
+                            <!--<p>Unlimited access to content</p>-->
+                            <!--<p>Individualized program set by coach</p>-->
+                            <!--<p>2 one-to-one sessions with Coach</p>-->
+
+                    <!--</td>-->
+                    <!--<td class="plan-intro">-->
+
+                            <!--<p>Keywords search and module topics</p>-->
+                            <!--<p>Diagnostic tool - Full Version</p>-->
+                            <!--<p>Prompts content according to diagnostic</p>-->
+                            <!--<p>Individualized program set by coach</p>-->
+                            <!--<p>2 one-to-one sessions with Coach</p>-->
+                            <!--<p>Access to monthly workshop of choice</p>-->
+
+                    <!--</td>-->
+                </tr>
+                <tr>
+                    {% for plan in planList %}
+                    <td>
+                        <div class="plan-purchase">
+                            <a class="btn btn-warning" target="_blank" href="{{plan.plan_acuity_package_link}}">Purchase</a>
+                        </div>
+                    </td>
+                    {% endfor %}
+                    <!--<td></td>-->
+                    <!--<td>            <div class="plan-purchase">-->
+            <!--<button class="btn btn-warning">Purchase</button>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<div class="plan-purchase">-->
+                            <!--<a class="btn btn-warning" target="_blank" href="https://app.acuityscheduling.com/catalog.php?owner=14907333&action=addCart&clear=1&id=424531">Purchase</a>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<div class="plan-purchase">-->
+            <!--<button class="btn btn-warning">Purchase</button>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                </tr>
+            </table>
+            <p style="float:right;color:#EE3B3B">Make sure that the email you use in the purchase page is that same as your toolbox plan account email.</p>
+        </div>
+    </div>
+</div>
+<script>
+    function verifyCode() {
+        certificateCode = prompt("Please input your certificate code")
+        if (certificateCode.length != 0) {
+            form = new FormData()
+            form.append("certificate_code", certificateCode)
+            $.ajax({
+                type:'POST',
+                url:  location.href,
+                data:form,
+                processData:false,  // 告诉jquery不转换数据
+                contentType:false,  // 告诉jquery不设置内容格式
+
+                success:function (arg) {
+
+                     alert(arg["desc"]);
+                     location.reload();
+                }
+            })
+        }
+
+    }
+</script>

@@ -1,0 +1,12 @@
+{% load static %} {% include 'toolbox_user/__header.html' %}
+
+<div class="product-section section pt-120 pb-120">
+    <div class="container">
+        <div class="user-plan-info row">
+            <div class="col-xs-12, col-md-12" style="text-align: center; margin-top: 100px">
+                <h1>{{error_message}}</h1>
+                <h3><a href="{% url 'home' %}" style="color: red">Click here to return homepage</a>    </h3>
+            </div>
+        </div>
+    </div>
+</div>

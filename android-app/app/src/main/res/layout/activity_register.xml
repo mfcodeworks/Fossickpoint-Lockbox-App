@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45dp"
+                android:orientation="vertical">
+
+                <com.fossickpoint.fonts.HelveticaNeue
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Username"
+                    android:textColor="#c1282d"
+                    android:textSize="24dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="40dp">
+
+                    <EditText
+                        android:id="@+id/form_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#c1282d"
+                        android:ems="10"
+                        android:fontFamily="sans-serif-light"
+                        android:imeOptions="flagNavigateNext"
+                        android:inputType="textNoSuggestions|textPersonName"
+                        android:maxLength="30"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="20dp"
+                        android:textColor="#333333"
+                        android:textColorHint="#aaaaaa"
+                        android:textSize="20dp" />
+
+                </RelativeLayout>
+
+                <com.fossickpoint.fonts.HelveticaNeue
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Password"
+                    android:textColor="#c1282d"
+                    android:textSize="24dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="40dp">
+
+                    <EditText
+                        android:id="@+id/form_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#c1282d"
+                        android:ems="10"
+                        android:fontFamily="sans-serif-light"
+                        android:imeOptions="flagNavigateNext"
+                        android:inputType="textNoSuggestions|textPersonName|textPassword"
+                        android:maxLength="30"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="20dp"
+                        android:textColor="#333333"
+                        android:textColorHint="#aaaaaa"
+                        android:textSize="20dp" />
+
+                </RelativeLayout>
+
+                <com.fossickpoint.fonts.HelveticaNeue
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textColor="#c1282d"
+                    android:textSize="24dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="40dp">
+
+                    <EditText
+                        android:id="@+id/form_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#c1282d"
+                        android:ems="10"
+                        android:fontFamily="sans-serif-light"
+                        android:imeOptions="flagNavigateNext"
+                        android:inputType="textNoSuggestions|textPersonName"
+                        android:maxLength="30"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="20dp"
+                        android:textColor="#333333"
+                        android:textColorHint="#aaaaaa"
+                        android:textSize="20dp" />
+
+                </RelativeLayout>
+
+                <com.fossickpoint.fonts.HelveticaNeue
+                    android:id="@+id/textView7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Gender"
+                    android:textColor="#c1282d"
+                    android:textSize="24dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:minHeight="40dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <RadioButton
+                        android:id="@+id/radio_button_male"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="#c1282d"
+                        android:text="Male"
+                        android:textColor="#c1282d" />
+
+                    <RadioButton
+                        android:id="@+id/radio_button_female"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="#c1282d"
+                        android:text="Female"
+                        android:textColor="#c1282d" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom|center_horizontal"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/button_register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="60dp"
+                    android:layout_marginTop="45dp"
+                    android:background="@drawable/rounded_button_red"
+                    android:elevation="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="45dp"
+                    android:paddingRight="45dp"
+                    android:paddingTop="5dp">
+
+                    <com.fossickpoint.fonts.HelveticaNeue
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="REGISTER NOW"
+                        android:textColor="#FFFFFF"
+                        android:textSize="30dp" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

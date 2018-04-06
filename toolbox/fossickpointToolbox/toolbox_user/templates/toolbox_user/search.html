@@ -1,0 +1,67 @@
+{% load static %} {% include 'toolbox_user/__header.html' %}
+
+
+<!-- PAGE BANNER SECTION -->
+<div class="page-banner-section section">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-banner-content">
+                    <h1>Search result</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END PAGE BANNER SECTION -->
+
+<!-- PAGE SECTION START -->
+<div class="page-section section">
+    <div class="container">
+        <div class="isotope-grid row">
+            {% for content in searchContents %}
+            <!-- Product Item Start -->
+            <div class="isotope-item col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                <div class="product-item text-center">
+                    <!-- Product Image -->
+                    <div class="product-img">
+                        <!-- Image -->
+                        <a class="image" href="{% url 'user_content' contentID=content.id %}">
+                            <img src="../../../static/{{content.thumbnail}}" style="width:300px; height:300px" alt="" />
+                        </a>
+                        <!-- Wishlist Button -->
+                        <!-- <a class="wishlist" href="#" title="Wishlist"><i class="pe-7s-like"></i></a> -->
+                        <!-- Action Button -->
+                        <!-- <div class="action-btn fix">
+                            <a href="#" data-toggle="modal"  data-target="#quickViewModal" title="Quick View"><i class="pe-7s-look"></i>view</a>
+                            <a href="#" title="Add to Cart"><i class="pe-7s-cart"></i>add to collection</a>
+                        </div> -->
+                    </div>
+                    <!-- Portfolio Info -->
+                    <div class="product-info text-center">
+                        <!-- Title -->
+                        <h5 class="title">
+                            <a href="{% url 'user_content' contentID=content.id %}">{{content.name}}</a>
+                        </h5>
+                        <!-- Price Ratting -->
+                        <div class="price-ratting fix">
+                            <!-- <span class="price float-left"><span class="new">€169.00</span></span> -->
+                            <!-- <span class="ratting float-right">
+                                <i class="fa fa-star active"></i>
+                                <i class="fa fa-star active"></i>
+                                <i class="fa fa-star active"></i>
+                                <i class="fa fa-star active"></i>
+                                <i class="fa fa-star active"></i>
+                            </span> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <!-- Product Item End -->
+
+        </div>
+    </div>
+</div>
+<!-- PAGE SECTION END -->

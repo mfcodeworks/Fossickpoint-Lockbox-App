@@ -1,0 +1,104 @@
+{% extends 'toolbox/_base.html' %} {% load static %} {% block csslink %}
+<!--<link rel="stylesheet" href="{% static 'toolbox/css/content.css' %}" />-->
+<!--<script src="{% static 'toolbox/js/content.js' %}"></script>-->
+<!--<script src="{% static 'toolbox/js/layer.js' %}"></script>-->
+
+{% endblock %} {% block title %} Users {% endblock %} {% block main %}
+<style>
+    .userInfo {
+        margin-top: 10px; 
+    }
+</style>
+<div class="row-content am-cf">
+        <div class="row am-cf">
+            <div class="am-u-sm-12 am-u-md-8">
+                <div class="widget am-cf"  style="height: 600px">
+                    <div class="widget-head am-cf">
+                        <div class="widget-title am-fl">User Information</div>
+                    </div>
+                    <div class="widget-body am-fr">
+                        <form id="userForm" class="am-form">
+                            <div class="row userInfo">
+                                <div class="am-u-sm-4 am-u-m-2">
+                                    Name: {{user.name}}
+                                </div>
+                                <div class="am-u-sm-4 am-u-m-2">
+                                    Age: {{user.age}}
+                                </div>
+                                <div class="am-u-sm-4 am-u-m-2">
+                                    Gender:
+                                    {% if user.gender == 0 %}
+                                        Male
+                                    {% else %}
+                                        Female
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row userInfo">
+                                <div class="am-u-sm-4 am-u-m-2">
+                                    Nation: {{user.nation}}
+                                </div>
+                                <div class="am-u-sm-4 am-u-m-2">
+                                    City: {{user.city}}
+                                </div>
+                                <div class="am-u-sm-4 am-u-m-2">
+                                    Occupation: {{user.occupation}}
+                                </div>
+                            </div>
+                            <div class="row userInfo">
+                                <div class="am-u-sm-6 am-u-m-4">
+                                    Address: {{user.address}}
+                                </div>
+                                <div class="am-u-sm-6 am-u-m-4">
+                                    Email: {{user.email}}
+                                </div>
+                            </div>
+                            <div class="row userInfo">
+                                <div class="am-u-sm-6 am-u-m-4">
+                                    <span>Profile:</span> <input type="text"> 
+                                </div>
+                                <div class="am-u-sm-6 am-u-m-4">
+                                    Assigned program: <input type="text">    
+                                </div>
+                            </div>
+                            <div class = "row userInfo">
+                                Note: <textarea name="note" id="note" cols="30" rows="10">{{user.note}}</textarea>
+                            </div>
+                            <div class="row userInfo">
+                                <div class="am-u-sm-4 am-u-m-2 am-u-md-offset-2">
+                                        <button type="button" name="setting" id="setting" value="Edit" class="am-btn am-btn-primary">Edit Information</button>                                       
+                                </div>
+                                <div class="am-u-sm-4 am-u-m-2">
+                                        <button type="button" name="program" id="program" value="Edit" class="am-btn am-btn-primary">Assign program</button>                                       
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="am-u-sm-12 am-u-md-4">
+                <div class="widget am-cf"  style="height: 600px">
+                    <div class="widget-head am-cf">
+                        <div class="widget-title am-fl">User List</div>
+
+
+                    </div>
+                    <div class="widget-body widget-body-md am-fr">
+
+
+                            <ul class="am-list am-list-static">
+                                {% if studentList %} {% for student in studentList %}
+
+                                <li id="student.id"><a href="{% url 'user' userID=student.id %}">{{student.userName}}</a></li>
+
+                                {% endfor %} {% endif %}
+
+                            </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</div>
+    {% endblock %}

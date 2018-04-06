@@ -1,0 +1,724 @@
+{% extends 'toolbox/_base.html' %} {% load static %} {% block csslink %}
+
+<script src="{% static 'toolbox/js/content.js' %}"></script>
+<script src="{% static 'toolbox/js/layer.js' %}"></script>
+<!-- bootstrap.min.js support the category tree dropdown -->
+<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+{% endblock %} {% block title %} Contents {% endblock %}
+{% block pagetitle %} Contents {% endblock %}
+{% block main %}
+{% load mptt_tags %}
+<style>
+ li p {
+     padding-left: 10px;
+ }
+ .dropdown-submenu {  
+            position: relative;  
+        }  
+        .dropdown-submenu > .dropdown-menu {  
+            top: 0;  
+            left: 100%;  
+            margin-top: -6px;  
+            margin-left: -1px;  
+            -webkit-border-radius: 0 6px 6px 6px;  
+            -moz-border-radius: 0 6px 6px;  
+            border-radius: 0 6px 6px 6px;  
+        }  
+        .dropdown-submenu:hover > .dropdown-menu {  
+            display: block;  
+        }  
+        .dropdown-submenu > a:after {  
+            display: block;  
+            content: " ";  
+            float: right;  
+            width: 0;  
+            height: 0;  
+            border-color: transparent;  
+            border-style: solid;  
+            border-width: 5px 0 5px 5px;  
+            border-left-color: #ccc;  
+            margin-top: 5px;  
+            margin-right: -10px;  
+        }  
+        .dropdown-submenu:hover > a:after {  
+            border-left-color: #fff;  
+        }  
+        .dropdown-submenu.pull-left {  
+            float: none;  
+        }  
+        .dropdown-submenu.pull-left > .dropdown-menu {  
+            left: -100%;  
+            margin-left: 10px;  
+            -webkit-border-radius: 6px 0 6px 6px;  
+            -moz-border-radius: 6px 0 6px 6px;  
+            border-radius: 6px 0 6px 6px;  
+        }  
+        #searchCategory {
+            width: 150px;
+        }
+</style>
+<div class="row-content am-cf">
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+            <div class="widget am-cf">
+                <div class="widget-head am-cf">
+                    <div class="widget-title  am-cf">Content list</div>
+
+
+                </div>
+                <div class="widget-body  am-fr">
+
+                    <div class="am-u-sm-12 am-u-md-4 am-u-lg-2">
+                        <div class="am-form-group">
+                            <div class="am-btn-toolbar">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <button type="button" class="am-btn am-btn-default am-btn-danger" id="add">
+                                                    <span class="am-icon-plus"></span> Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+           
+                    <form id="searchForm" action="./content" method="post">
+                        {% csrf_token %}
+                    <div class="am-u-sm-12 am-u-md-4 am-u-lg-2">
+                            <div class="am-form-group tpl-table-list-select">
+                                    <select data-am-selected="{btnSize: 'sm'}" name="levelSearch" class="levelSearch">
+                                            <option value="0" selected>All Levels</option>
+                                            <option value="1">Free contents</option>
+                                            <option value="2">limited contents</option>
+                                            <option value="3">personalized contents</option>
+                                          </select>
+                            </div>                        
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-4 am-u-lg-2">
+                        <div class="am-form-group tpl-table-list-select">
+                            <select data-am-selected="{btnSize: 'sm'}" name="focusSearch" class="focusSearch">
+                                          <option value="All Focuses" selected>All Focuses</option>
+                                          <option value="Emotional Intelligence">Emotional Intelligence</option>
+                                          <option value="Social Intelligence">Social Intelligence</option>
+                                          <option value="Self Actualization">Self Actualization</option>
+                                        </select>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-4 am-u-lg-2">
+                        <div class="am-form-group tpl-table-list-select">
+                            <select multiple data-am-selected="{btnSize: 'sm'}" name="profileSearch" class="profileSearch">
+                                            <optgroup label="All">
+                                                <option value="All profiles" selected>All profiles</option>
+                                            </optgroup>
+                                            <optgroup label="B.Dominance">
+                                                <option value="FL">FL</option>
+                                                <option value="FR">FR</option>
+                                                <option value="BL">BL</option>
+                                                <option value="BR">BR</option>
+                                            </optgroup>
+                                            <optgroup label="Temperament">
+                                                <option value="Think">Think</option>
+                                                <option value="Feel">Feel</option>
+                                                <option value="Act">Act</option>
+                                            </optgroup>
+                                            <optgroup label="Arosual">
+                                                <option value="Introvert">Introvert</option>
+                                                <option value="Extrovert">Extrovert</option>
+                                                <option value="Introvert/extrovert">Introvert/extrovert</option>
+                                            </optgroup>
+                                            <optgroup label="Stimuli">
+                                                <option value="HSP">HSP</option>
+                                                <option value="HSS">HSS</option>
+                                            </optgroup>
+
+                                        </select>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-4 am-u-lg-2">
+                        <div class="am-form-group tpl-table-list-select" >
+                            <select data-am-selected="{btnSize: 'sm'}" name="tagSearch" class="tagSearch">
+                                <option value="All tags">All tags</option>
+                                <option value="images">Images</option>
+                                <option value="formulas">Formulas</option>
+                                <option value="activities">Activities</option>
+                                <option value="skills">Skills</option>
+                                <option value="socialFrameworks">Social frameworks</option>
+                                <option value="concepts">Concepts</option>
+                                <option value="myths">Myths & notions</option>
+                                <option value=principles>Principles</option>
+                                        </select>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-2">
+                        <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                            <span class="am-input-group-btn" style="float: right">
+                                <button class="am-btn  am-btn-default am-btn-danger tpl-table-list-field am-icon-search" type="submit" ></button></span>
+
+                        </div>
+                    </div>
+                    </form>
+                    <div class="am-u-sm-12">
+                        <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
+                            <thead>
+                                <tr>
+                                    <th>Content name</th>
+                                    <th>level</th>
+                                    <th>Category</th>
+                                    <th>Focus</th>
+                                    <th>Tag</th>
+                                    <th>Profile</th>
+                                    <th>Operation</th>
+                                </tr>
+                            </thead>
+                            <tbody id="contentTable">
+                                {% if contentList %} {% for content in contentList %}
+                                <tr class="gradeX">
+                                    <td>
+                                        <div>
+                                            <table>
+                                                <tr>
+                                                    <td rowspan="2">
+                                                        <img src="../static/{{content.thumbnail}}" style="width:50px; height:50px">
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% url 'preview' contentID=content.id %}" target="view_window">{{content.name}}</a>
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+                                        </div>
+                                    </td>
+                                    <!--<td>{{content.leveltext}}</td>-->
+                                    <td>{{content.leveltext}}</td>
+                                    <td>{{content.category}}</td>
+                                    <td>{{content.focus}}</td>
+                                    <td>{{content.tag}}</td>
+                                    <!-- <td>{{content.profileText}}</td> -->
+                                    <td id="profileText{{content.id}}">
+                                        <script type="text/javascript">
+                                            profileText = "";
+                                        </script>
+                                        {% for profile in content.profile.all %}
+                                            <script type="text/javascript">
+                                                var profile = "{{profile.profileName}}"
+                                                profileText+=profile + ";";
+                                            </script>
+                                        {% endfor %}
+                                        <script type="text/javascript">
+                                            $("#profileText").val(profileText);
+                                            document.getElementById("profileText{{content.id}}").innerHTML=profileText
+                                        </script>
+                                    <!--</td>-->
+                                    <td>
+                                        <div class="tpl-table-black-operation">
+                                            <a href="{% url 'content' contentID=content.id %}" class="tpl-table-black-operation-edit">
+                                                            <i class="am-icon-pencil"></i> edit
+                                                        </a>
+                                            <a href="javascript:;" onclick="deleteContent({{content.id}})" class="tpl-table-black-operation-del">
+                                                            <i class="am-icon-trash"></i> delete
+                                                        </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %} {% endif %}
+
+
+
+                                <!-- more data -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="am-u-lg-12 am-cf">
+
+                        <div class="am-fr">
+                            <ul class="am-pagination tpl-pagination" id="pagination">
+                                <!--<li class="am-disabled"><a href="#">«</a></li>-->
+                                <!--<li class="am-active"><a href="#">1</a></li>-->
+                                <!--<li><a href="#">2</a></li>-->
+                                <!--<li><a href="#">3</a></li>-->
+                                <!--<li><a href="#">4</a></li>-->
+                                <!--<li><a href="#">5</a></li>-->
+                                <!--<li><a href="#">»</a></li>-->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %} {% block popup %}
+<div id="addContent" style="display:none">
+
+    <div class="tpl-login-content">
+        <!--<form class="am-form tpl-form-line-form" id="contentForm">-->
+        <!--{% csrf_token %}-->
+        <div class="am-form tpl-form-line-form">
+            <fieldset>
+                <legend>Add content</legend>
+                <div class="am-form-group am-form-file">
+                    <button type="button" class="am-btn am-btn-danger am-btn-sm">
+                            <i class="am-icon-cloud-upload"></i> Please select file</button>
+                    <input id="doc-form-file" type="file" name="uploadFile" multiple>
+                </div><span><p id="file-list"></p></span>
+
+                                <div class="am-form-group am-form-file">
+                    <button type="button" class="am-btn am-btn-danger am-btn-sm">
+                        <i class="am-icon-cloud-upload"></i> Please select thumbnail</button>
+                    <input id="doc-form-thumbnail" type="file" name="uploadFile" multiple>
+                </div><span><p id="thumbnail-list"></p></span>
+                                <script>
+                    $(function () {
+                        $('#doc-form-file').on('change', function () {
+                            var fileNames = '';
+                            $.each(this.files, function () {
+                                fileNames += '<span class="am-badge">' + this.name + '</span> ';
+                            });
+                            $('#file-list').html(fileNames);
+                        });
+                    });
+                    $(function () {
+                        $('#doc-form-thumbnail').on('change', function () {
+                            var fileNames = '';
+                            $.each(this.files, function () {
+                                fileNames += '<span class="am-badge">' + this.name + '</span> ';
+                            });
+                            $('#thumbnail-list').html(fileNames);
+                        });
+                    });
+                </script>
+                <div class="am-form-group">
+                    <label class="tag">Name</label>
+                    <input type="text" class="" id="title" name="title" placeholder="Please input file keyword, split by Blank">
+
+                </div>
+                <div class="am-form-group">
+                    <div class="row">
+                        <div class="am-u-lg-4">
+                            <label for="selectedType">Type</label>
+
+                        </div>
+                        <div class="am-u-lg-8">
+                            <select data-am-selected name="type" id="selectedType">
+                                <option value="doc">doc</option>
+                                <option value="pdf" selected>pdf</option>
+                                <option value="image">image</option>
+                                <option value="video">video</option>
+                                <option value="audio">audio</option>
+                                <option value="other">other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="am-form-group">
+                    <div class="row">
+                        <div class="am-u-lg-4">
+                            <label for="selectedLevel">Level</label>
+
+                        </div>
+                        <div class="am-u-lg-8">
+                            <select data-am-selected name="level" id="selectedLevel">
+                                <option value="1">free</option>
+                                <option value="2" selected>limited</option>
+                                <option value="3">personlized</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="am-form-group">
+                    <div class="row">
+                        <div class="am-u-lg-4">
+                            <label for="focus">Focus</label>
+
+                        </div>
+                        <div class="am-u-lg-8">
+                            <select data-am-selected id="focus" name="focus">
+                                <option value="Emotional Intelligence">Emotional Intelligence</option>
+                                <option value="Social Intelligence" selected>Social Intelligence</option>
+                                <option value="Self Actualization">Self Actualization</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="am-form-group">
+                    <div class="row">
+                        <div class="am-u-lg-4">
+                            <label for="selectedTag">Tag</label>
+
+                        </div>
+                        <div class="am-u-lg-8">
+                            <select data-am-selected id="selectedTag" name="selectedTag">
+                                <option value="images"  selected>Images</option>
+                                <option value="formulas">Formulas</option>
+                                <option value="activities">Activities</option>
+                                <option value="skills">Skills</option>
+                                <option value="socialFrameworks">Social frameworks</option>
+                                <option value="concepts">Concepts</option>
+                                <option value="myths">Myths & notions</option>
+                                <option value=principles>Principles</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="am-form-group">
+
+                    <label class="tag">Profile</label>
+                    <div class="row">
+                        <div class="am-u-lg-3">
+
+                            B.Dominance
+                        </div>
+                        <div class="am-u-lg-9">
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="FL" data-am-ucheck id="FL" name="chk">FL
+                                    </label>
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="FR" data-am-ucheck id="FR" name="chk">FR
+                                    </label>
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="BL" data-am-ucheck id="BL" name="chk">BL
+                                    </label>
+
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="BR" data-am-ucheck id="BR" name="chk">BR
+                                    </label>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="am-u-sm-3">
+
+                            Temperament
+                        </div>
+                        <div class="am-u-sm-9">
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="Think" data-am-ucheck id="Think" name="chk">Think
+                                    </label>
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="Feel" data-am-ucheck id="Feel" name="chk">Feel
+                                    </label>
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="Act" data-am-ucheck id="Act" name="chk">Act
+                                    </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="am-u-sm-2">
+                            Arosual
+                        </div>
+                        <div class="am-u-sm-10">
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="Introvert" data-am-ucheck id="Introvert" name="chk">Introvert
+                                    </label>
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="Extrovert" data-am-ucheck id="Extrovert" name="chk">Extrovert
+                                    </label>
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="Introvert/extrovert" data-am-ucheck id="Intorvert/extrovert" name="chk">Introvert/extrovert
+                                    </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="am-u-sm-3">
+                            Stimuli
+                        </div>
+                        <div class="am-u-sm-9">
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="HSP" data-am-ucheck id="HSP" name="chk">HSP
+                                    </label>
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="HSS" data-am-ucheck id="HSS" name="chk">HSS
+                                    </label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <div class="row">
+                        <div class="am-u-lg-2">
+                            <label class="tag">Category:</label>                                
+                        </div>
+                        <div class="am-u-lg-10">
+                                <div class="dropdown">
+                                        <button role="button" data-toggle="dropdown" href="#" id="searchCategory" class="am-btn-danger">All categories
+                                        
+                                        </button>
+                                        
+                                        <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dLabel">
+                                                {% recursetree nodes %}
+                                                <li class="dropdown-submenu">                                                        
+                                                {% if node.is_leaf_node %}
+                                                    <a class="category" id="category{{node.id}}" href="javascript::" onclick="selectCategory('{{node.name}}')"> {{node.name}}</a>                                                    
+                                                {% else %}
+                                                    <a class="category" id="category{{node.id}}" href="javascript::" > {{node.name}}</a>                                                                                                        
+                                                {% endif %}      
+                                                    {% if not node.is_leaf_node %}
+                                                    <ul class="dropdown-menu">
+                                                            {{ children }}
+                                                    </ul>
+                                                    {% endif %}
+                                                </li>
+                                                {% endrecursetree %}
+                                        </ul>
+                                    </div>                         
+                        </div>  
+                        <script>
+                            function selectCategory(categoryName) {
+                                $("#searchCategory").html(categoryName);
+                            }
+                        </script>                        
+                    </div>
+                </div>
+                <div class="am-form-group" id="tips"></div>
+                <div class="am-form-group">
+                    <label class="tag">Description</label>
+                    
+                          <textarea class="" rows="5" id="keyword" style="border:solid 1px"></textarea>
+
+                </div>
+                <div class="am-form-group">
+                    <div class="am-g">
+
+                        <div class="am-u-sm-5 am-u-sm-offset-1">
+                            <button id="upload" class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn">upload </button>
+                        </div>
+                        <div class="am-u-sm-5 am-u-end">
+                            <a id="reset" class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn">Reset</a>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <!--</form>-->
+    </div>
+</div>
+
+<div id="editContent" style="display:none">
+
+    <div class="tpl-login-content">
+        <!--<form class="am-form tpl-form-line-form" id="contentForm">-->
+        <!--{% csrf_token %}-->
+        <div class="am-form tpl-form-line-form">
+            <fieldset>
+                <legend>Add content</legend>
+                <div class="am-form-group am-form-file">
+                    <button type="button" class="am-btn am-btn-danger am-btn-sm">
+                            <i class="am-icon-cloud-upload"></i> Please select file</button>
+                    <input id="doc-form-file1" type="file" name="uploadFile" multiple>
+                </div><span><p id="file-list1"></p></span>
+
+                                <div class="am-form-group am-form-file">
+                    <button type="button" class="am-btn am-btn-danger am-btn-sm">
+                        <i class="am-icon-cloud-upload"></i> Please select thumbnail</button>
+                    <input id="doc-form-thumbnail1" type="file" name="uploadFile" multiple>
+                </div><span><p id="thumbnail-list1"></p></span>
+                                <script>
+                    $(function () {
+                        $('#doc-form-file1').on('change', function () {
+                            var fileNames = '';
+                            $.each(this.files, function () {
+                                fileNames += '<span class="am-badge">' + this.name + '</span> ';
+                            });
+                            $('#file-list1').html(fileNames);
+                        });
+                    });
+                    $(function () {
+                        $('#doc-form-thumbnail').on('change', function () {
+                            var fileNames = '';
+                            $.each(this.files, function () {
+                                fileNames += '<span class="am-badge">' + this.name + '</span> ';
+                            });
+                            $('#thumbnail-list').html(fileNames);
+                        });
+                    });
+
+
+
+                </script>
+                <div class="am-form-group">
+                    <label class="tag">Name</label>
+                    <input type="text" class="" id="title1" name="title" placeholder="Please input file keyword, split by Blank">
+
+                </div>
+                <div class="am-form-group">
+                    <div class="row">
+                        <div class="am-u-lg-4">
+                            <label for="selectedType">Type</label>
+
+                        </div>
+                        <div class="am-u-lg-8">
+                            <select data-am-selected name="type" id="selectedType1">
+                                <option value="doc">doc</option>
+                                <option value="pdf" selected>pdf</option>
+                                <option value="image">image</option>
+                                <option value="video">video</option>
+                                <option value="audio">audio</option>
+                                <option value="other">other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="am-form-group">
+                    <div class="row">
+                        <div class="am-u-lg-4">
+                            <label for="focus">Focus</label>
+
+                        </div>
+                        <div class="am-u-lg-8">
+                            <select data-am-selected id="focus1" name="focus">
+                                <option value="Emotional Intelligence">Emotional Intelligence</option>
+                                <option value="Social Intelligence" selected>Social Intelligence</option>
+                                <option value="Self Actualization">Self Actualization</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="am-form-group">
+                    <div class="row">
+                        <div class="am-u-lg-4">
+                            <label class="tag" for="tag">Tag</label>
+
+                        </div>
+                        <div class="am-u-lg-8">
+                            <select data-am-selected id="tag1" name="tag">
+                                <option value="images"  selected>Images</option>
+                                <option value="formulas">Formulas</option>
+                                <option value="activities">Activities</option>
+                                <option value="skills">Skills</option>
+                                <option value="socialFrameworks">Social frameworks</option>
+                                <option value="concepts">Concepts</option>
+                                <option value="myths">Myths & notions</option>
+                                <option value=principles>Principles</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="am-form-group">
+
+                    <label class="tag">Profile</label>
+                    <div class="row">
+                        <div class="am-u-lg-3">
+
+                            B.Dominance
+                        </div>
+                        <div class="am-u-lg-9">
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="FL" data-am-ucheck id="FL1" name="chk">FL
+                                    </label>
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="FR" data-am-ucheck id="FR1" name="chk">FR
+                                    </label>
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="BL" data-am-ucheck id="BL1" name="chk">BL
+                                    </label>
+
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="BR" data-am-ucheck id="BR1" name="chk">BR
+                                    </label>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="am-u-sm-3">
+
+                            Temperament
+                        </div>
+                        <div class="am-u-sm-9">
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="Think" data-am-ucheck id="Think1" name="chk">Think
+                                    </label>
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="Feel" data-am-ucheck id="Feel1" name="chk">Feel
+                                    </label>
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="Act" data-am-ucheck id="Act1" name="chk">Act
+                                    </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="am-u-sm-2">
+                            Arosual
+                        </div>
+                        <div class="am-u-sm-10">
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="Introvert" data-am-ucheck id="Introvert1" name="chk">Introvert
+                                    </label>
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="Extrovert" data-am-ucheck id="Extrovert1" name="chk">Extrovert
+                                    </label>
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="Introvert/extrovert" data-am-ucheck id="Intorvert/extrovert1" name="chk">Introvert/extrovert
+                                    </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="am-u-sm-3">
+                            Stimuli
+                        </div>
+                        <div class="am-u-sm-9">
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="HSP" data-am-ucheck id="HSP1" name="chk">HSP
+                                    </label>
+
+                            <label class="am-checkbox-inline">
+                                        <input type="checkbox" value="HSS" data-am-ucheck id="HSS1" name="chk">HSS
+                                    </label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="am-form-group" id="tips1"></div>
+                <div class="am-form-group">
+                    <label class="tag">Description</label>
+                    <!--<input type="text" class="" id="keyword1" placeholder="Please input file keyword, split by Blank" name="keyword">-->
+                          <textarea class="" rows="5" id="keyword1"></textarea>
+
+                </div>
+                <div class="am-form-group">
+                    <div class="am-g">
+
+                        <div class="am-u-sm-5 am-u-sm-offset-1">
+                            <button id="update" class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn">upload </button>
+                        </div>
+                        <div class="am-u-sm-5 am-u-end">
+                            <a id="reset1" class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn">Reset</a>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <!--</form>-->
+    </div>
+</div>
+<div class="targetDiv"></div>
+{% endblock %}

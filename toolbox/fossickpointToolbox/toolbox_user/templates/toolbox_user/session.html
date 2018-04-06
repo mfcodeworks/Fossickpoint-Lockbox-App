@@ -1,0 +1,176 @@
+{% load static %} {% include 'toolbox_user/__header.html' %}
+<!-- PAGE BANNER SECTION -->
+
+<div class="page-section section">
+    <div class="container">
+        <div class="row">
+            <div class="session-information-box col-md-4">
+
+                <h3>Booked sessions</h3>
+
+                <h4>You can book 2 session(s) in this month.</h4>
+                {% if booked_sessions %}
+                    {% for booked_session in booked_sessions %}
+                     <div class="booked-session">
+                        <h3>{{booked_session.appointment_time}}</h3>
+                        <button class="btn btn-danger" onclick="cancelSession('{{booked_session.appointment_id}}')">cancel</button>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="booked-session">
+                        <h3>You don't book any sessions now</h3>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="session-booking-box col-md-8 table-responsive">
+                <!--<div class="container">-->
+                      <div class="row">
+                        <div class="col-md-3">
+                            <a class="week_link" href="javascript::" onclick="getPreviousWeek()">Previous week</a>
+                        </div>
+                        <div class="col-md-6">
+                            <h3>Available schedule time table</h3>
+                        </div>
+                         <div class="col-md-3">
+                            <a class="week_link" href="javascript::" onclick="getNextWeek()">Next week</a>
+                        </div>
+                    </div>
+                <!--</div>-->
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Monday</th>
+                            <th>Tuesday</th>
+                            <th>Wednesday</th>
+                            <th>Thursday</th>
+                            <th>Friday</th>
+                        </tr>
+                        <tr>
+                            {% for day in booking_day %}
+                                <th>{{day}}</th>
+                            {% endfor %}
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {% for day_time in booking_time %}
+                                <td class="{{forloop.counter0}}">
+                                    <ul>
+                                        {% for time in day_time %}
+                                        <li><a href="javascript::" class="schedule_time" onclick="selectTime(this, '{{time.day}}', '{{time.time}}')">{{time.time}}</a></li>
+                                        {% endfor %}
+                                    </ul>
+
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+
+
+
+                </table>
+                <button class="btn btn-danger" onclick="bookSchedule()">Book the schedule</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var current_selected_monday = '{{booking_day.0}}';
+    var current_schedule_time = '';
+    function cancelSession(appointment_id) {
+        form = new FormData();
+        form.append("appointment_id", appointment_id);
+        form.append("operation", "cancel");
+        $.ajax({
+            type:'POST',
+            url:  location.href,
+            data:form,
+            processData:false,  // 告诉jquery不转换数据
+            contentType:false,  // 告诉jquery不设置内容格式
+
+            success:function (arg) {
+                if (arg["status"] == 1){
+                    alert(arg["desc"]);
+                    location.reload();
+                }
+                else {
+                    alert(arg["desc"]);
+                }
+            }
+        })
+    }
+    Date.prototype.Format = function (fmt) { //author: meizz
+    var o = {
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "h+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+    }
+
+    function bookSchedule() {
+        var date = new Date().Format("yyyy-MM-dd");
+        alert(date);
+    }
+
+    function getPreviousWeek() {
+        // get this week's monday date
+        var date = new Date();
+        var day = date.getDay() || 7;
+        this_monday = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1 - day).Format("yyyy-MM-dd");
+        if (this_monday == current_selected_monday)
+            alert("Now it is the current week.");
+        else {
+            var current_monday_obj = new Date(Date.parse(current_selected_monday.replace(/-/g,   "/")));
+            var previous_monday = new Date(current_monday_obj.getFullYear(), current_monday_obj.getMonth(), current_monday_obj.getDate() - 7).Format("yyyy-MM-dd");
+            window.location.href="./?monday=" + previous_monday;
+        }
+    }
+
+    function getNextWeek() {
+        var current_monday_obj = new Date(Date.parse(current_selected_monday.replace(/-/g,   "/")));
+        next_monday = new Date(current_monday_obj.getFullYear(), current_monday_obj.getMonth(), current_monday_obj.getDate() + 7).Format("yyyy-MM-dd");
+        window.location.href="./?monday=" + next_monday;
+    }
+
+    function selectTime(obj, date, time) {
+        $(".schedule_time").css("color","#999999");
+        $(obj).css("color", "#d65050");
+        current_schedule_time = date + "T" + time + "+1100";
+    }
+
+    function bookSchedule() {
+        form = new FormData();
+        form.append("operation", "book");
+        form.append("datetime", current_schedule_time)
+        $.ajax({
+            type:'POST',
+            url:  location.href,
+            data:form,
+            processData:false,  // 告诉jquery不转换数据
+            contentType:false,  // 告诉jquery不设置内容格式
+
+            success:function (arg) {
+                if (arg["status"] == 1){
+                    alert(arg["desc"]);
+                    location.reload();
+                }
+                else {
+                    alert(arg["desc"]);
+                }
+            }
+        })
+    }
+</script>
